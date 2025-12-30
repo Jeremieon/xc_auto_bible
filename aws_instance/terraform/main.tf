@@ -15,7 +15,7 @@ provider "aws" {
 }
 
 module "vpc" {
-  source                    = "../modules/vpc"
+  source                    = "./modules/vpc"
   instance_name             = var.instance_name
   aws_region                = var.aws_region
   vpc_cidr_block            = var.vpc_cidr_block
@@ -25,7 +25,7 @@ module "vpc" {
 }
 
 module "instance" {
-  source               = "../modules/instance"
+  source               = "./modules/instance"
   instance_name        = var.instance_name
   aws_ami              = var.aws_ami
   instance_type        = var.instance_type
