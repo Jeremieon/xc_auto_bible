@@ -85,8 +85,9 @@ resource "aws_security_group" "private_sg" {
 
 resource "aws_key_pair" "my_laptop_key" {
   key_name   = var.key_name
-  public_key = file("~/.ssh/id_rsa.pub")
+  public_key = var.ssh_public_key
 }
+
 
 resource "aws_instance" "app_server" {
   ami             = var.aws_ami

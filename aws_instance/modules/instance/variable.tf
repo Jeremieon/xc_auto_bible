@@ -9,9 +9,9 @@ variable "instance_type" {
   type        = string
 }
 
-variable "key_name" {
-  type    = string
-  default = null
+variable "ssh_public_key" {
+  description = "SSH public key for EC2 access"
+  type        = string
 }
 
 variable "instance_count" {
@@ -48,3 +48,7 @@ variable "my_private_subnet_id" {
   type        = string
 }
 
+variable "key_name" {
+  type    = string
+  default = null
+}

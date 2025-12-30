@@ -57,3 +57,9 @@ variable "key_name" {
   type    = string
   default = null
 }
+
+variable "ssh_public_key" {
+  description = "SSH public key"
+  type        = string
+  sensitive   = true
+}
