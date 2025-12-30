@@ -33,4 +33,5 @@ module "instance" {
   instance_count       = var.instance_count
   key_name             = var.key_name
   user_data_script     = var.user_data_script
+  ssh_public_key       = var.ssh_public_key
 }

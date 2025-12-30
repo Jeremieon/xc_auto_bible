@@ -90,12 +90,12 @@ resource "aws_key_pair" "my_laptop_key" {
 
 
 resource "aws_instance" "app_server" {
-  ami             = var.aws_ami
-  instance_type   = var.instance_type
-  subnet_id       = var.my_public_subnet_id
-  count           = var.instance_count
-  key_name        = aws_key_pair.my_laptop_key.key_name
-  user_data       = var.user_data_script
+  ami                    = var.aws_ami
+  instance_type          = var.instance_type
+  subnet_id              = var.my_public_subnet_id
+  count                  = var.instance_count
+  key_name               = aws_key_pair.my_laptop_key.key_name
+  user_data              = var.user_data_script
   vpc_security_group_ids = [aws_security_group.my_app_sg.id]
   tags = {
     Name = format("%s-instance", var.instance_name)
@@ -110,8 +110,7 @@ resource "aws_instance" "private_app_server" {
   key_name        = aws_key_pair.my_laptop_key.key_name
   security_groups = [aws_security_group.private_sg.id]
   user_data       = var.user_data_script
-  #file(var.user_data_script)
-  vpc_security_group_ids = [aws_security_group.my_app_sg.id]
+
 
 
   tags = {
