@@ -32,4 +32,4 @@ jobs:
       - name: Terraform Apply
         run: |
           cd aws_instance/terraform
-          terraform apply -auto-approve-var="ssh_public_key=${SSH_PUBLIC_KEY}"
+          terraform apply -auto-approve -var="ssh_public_key=${SSH_PUBLIC_KEY}"
