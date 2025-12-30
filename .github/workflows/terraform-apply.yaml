@@ -25,10 +25,10 @@ jobs:
 
       - name: Terraform Init
         run: |
-          cd terraform
+          cd aws_instance/terraform
           terraform init
 
       - name: Terraform Apply
         run: |
-          cd terraform
+          cd aws_instance/terraform
           terraform apply -auto-approve
