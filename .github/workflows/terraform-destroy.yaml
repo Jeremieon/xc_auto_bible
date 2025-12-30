@@ -7,14 +7,6 @@ jobs:
   terraform-destroy:
     runs-on: ubuntu-latest
 
-    env:
-      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
-      AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
-      TF_VAR_ssh_public_key: ${{ secrets.SSH_PUBLIC_KEY }}
-      TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
-
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -23,11 +15,14 @@ jobs:
         uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: 1.6.6
+          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
       - name: Terraform Init
         run: |
+          cd aws_instance
           terraform init
 
       - name: Terraform Destroy
         run: |
+          cd aws_instance
           terraform destroy -auto-approve
