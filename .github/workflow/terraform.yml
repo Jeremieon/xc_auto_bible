@@ -1,0 +1,41 @@
+name: Terraform Apply / Destroy
+
+on:
+  workflow_dispatch:
+    inputs:
+      action:
+        description: "Choose action"
+        required: true
+        default: "apply"
+        type: choice
+        options:
+          - apply
+          - destroy
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.9.0
+
+      - name: Terraform Init
+        run: terraform -chdir=terraform init
+
+      - name: Terraform Apply or Destroy
+        run: |
+          if [ "${{ github.event.inputs.action }}" == "apply" ]; then
+            echo "Applying Terraform..."
+            terraform -chdir=terraform plan -out=tfplan
+            terraform -chdir=terraform apply -auto-approve tfplan
+          else
+            echo "Destroying Terraform resources..."
+            terraform -chdir=terraform plan -destroy -out=tfplan
+            terraform -chdir=terraform destroy -auto-approve tfplan
+          fi
