@@ -1,6 +1,5 @@
 terraform {
-  required_version = ">= 1.8.0, < 2.0.0"
-
+  required_version = ">= 0.14.0"
   required_providers {
     volterra = {
       source  = "volterraedge/volterra"
@@ -9,13 +8,8 @@ terraform {
   }
 }
 
-# resource "local_file" "cert_file" {
-#   content_base64 = var.api_p12
-#   filename       = "${path.module}/certificate.p12"
-# }
-
 provider "volterra" {
-  api_p12_file = base64decode(var.api_p12)
+  api_p12_file = "${path.module}/api.p12"
   url          = "https://${var.tenant_name}.console.ves.volterra.io/api"
 }
 
