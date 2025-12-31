@@ -1,9 +1,3 @@
-variable "api_p12" {
-  description = "Base64 encoded content of the .p12 file"
-  type        = string
-  sensitive   = true
-}
-
 variable "tenant_name" {
   description = "REQUIRED: F5 Distributed Cloud tenant ID"
   type        = string
