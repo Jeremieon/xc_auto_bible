@@ -1,7 +1,0 @@
-.git
-
-# Terraform
-*.tfstate
-*.tfstate.backup
-.terraform/
-README.md

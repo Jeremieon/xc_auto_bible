@@ -29,10 +29,11 @@ resource "aws_security_group" "my_app_sg" {
 
   ingress {
     from_port   = 8000
-    to_port     = 8000
+    to_port     = 8100
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
+
 
   egress {
     from_port   = 0

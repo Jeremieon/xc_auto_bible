@@ -1,4 +1,6 @@
 #!/bin/bash
+set -e
+
 sudo apt-get update -y
 sudo apt-get upgrade -y
 
@@ -12,12 +14,29 @@ sudo apt-get install -y openssh-server
 sudo systemctl enable ssh
 sudo systemctl start ssh
 
-#Jump
-#ssh -i ~/.ssh/id_rsa -J ubuntu@54.147.60.46 ubuntu@10.0.2.71
+# Deploy vulnerable applications
+sudo docker run -d -p 8080:80 jeremy9k/foodwmagic:v0.1
+sudo docker run -d -p 8081:3000 bkimminich/juice-shop
 
-# Nginx test container
-sudo mkdir -p /home/ubuntu/nginx-html
-echo "<h1>This container is up</h1>" | sudo tee /home/ubuntu/nginx-html/index.html
-sudo docker run -d -p 8000:80 \
-  -v /home/ubuntu/nginx-html:/usr/share/nginx/html \
-  --name nginx-test nginx:latest
+# -------------------------------------------------------------------
+# Nginx test container (robust for EC2 user data)
+# -------------------------------------------------------------------
+
+# Wait for Docker daemon to be ready
+until docker info >/dev/null 2>&1; do
+  sleep 2
+done
+
+# Create web root
+mkdir -p /opt/nginx-html
+echo "<h1>This container is up</h1>" > /opt/nginx-html/index.html
+
+# Remove container if it already exists (AMI reuse / reboot safety)
+docker rm -f nginx-test || true
+
+# Run Nginx
+docker run -d \
+  -p 8000:80 \
+  -v /opt/nginx-html:/usr/share/nginx/html:ro \
+  --name nginx-test \
+  nginx:latest

@@ -17,6 +17,12 @@ output "private_instance_ids" {
   value = module.instance.private_instance_ids
 }
 
+output "public_ip" {
+  description = "First public IP (primary instance)"
+  value       = module.instance.public_ips[0]
+}
+
+
 output "public_ips" {
   value = module.instance.public_ips
 }

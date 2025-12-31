@@ -1,11 +1,13 @@
-name: Terraform Destroy
+name: F5XC Automation - AWS Instance Deployment Destroy
 
 on:
   workflow_dispatch:
 
 jobs:
-  terraform-destroy:
+  aws-instance-destroy:
     runs-on: ubuntu-latest
+    env:
+      TF_VAR_public_ip: "0.0.0.0"
 
     steps:
       - name: Checkout repo
@@ -25,4 +27,28 @@ jobs:
       - name: Terraform Destroy
         run: |
           cd aws_instance
+          terraform destroy -auto-approve
+
+  F5XC-automation-destroy:
+    needs: aws-instance-destroy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup & Initialize Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.6.6
+          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+      - name: Terraform Init
+        run: |
+          cd f5-xc-lb
+          terraform init
+
+      - name: Terraform Destroy
+        run: |
+          cd f5-xc-lb
           terraform destroy -auto-approve

@@ -1,13 +1,15 @@
-name: Terraform Apply
+name: F5XC Automation - AWS Instance Deployment
 
 on:
   push:
     branches:
-      - main
+      - test
 
 jobs:
-  terraform:
+  aws-instance-deployment:
     runs-on: ubuntu-latest
+    outputs:
+      public_ip: ${{ steps.get_public_ip.outputs.ip }}
 
     steps:
       - name: Checkout repo
@@ -31,4 +33,33 @@ jobs:
       - name: Terraform Apply
         run: |
           cd aws_instance
+          terraform apply -auto-approve
+
+      - name: Export Instance IP
+        id: get_public_ip
+        run: |
+          cd aws_instance
+          echo "ip=$(terraform output -raw public_ip)" >> $GITHUB_OUTPUT
+
+  f5xc-automation:
+    runs-on: ubuntu-latest
+    needs: aws-instance-deployment
+    env:
+      TF_VAR_public_ip: ${{ needs.aws-instance-deployment.outputs.public_ip }}
+      TF_TOKEN_app_terraform_io: ${{ secrets.TF_API_TOKEN }}
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+      - name: Deploy F5XC HTTP only Load Balancer
+        run: |
+          cd f5-xc-lb
+          echo "Running F5XC terraform Automation" 
+          terraform init
           terraform apply -auto-approve
