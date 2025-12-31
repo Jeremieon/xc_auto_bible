@@ -3,13 +3,14 @@ name: F5XC Automation - AWS Instance Deployment
 on:
   push:
     branches:
-      - test
+      - main
 
 jobs:
   aws-instance-deployment:
     runs-on: ubuntu-latest
     outputs:
-      public_ip: ${{ steps.get_public_ip.outputs.ip }}
+      public_ip: ${{ steps.tf-output.outputs.public_ip }}
+      private_ip: ${{ steps.tf-output.outputs.private_ip }}
 
     steps:
       - name: Checkout repo
@@ -36,10 +37,11 @@ jobs:
           terraform apply -auto-approve
 
       - name: Export Instance IP
-        id: get_public_ip
+        id: tf-output
         run: |
           cd aws_instance
-          echo "ip=$(terraform output -raw public_ip)" >> $GITHUB_OUTPUT
+          echo "public_ip=$(terraform output -raw public_ip)" >> $GITHUB_OUTPUT
+          echo "private_ip=$(terraform output -raw private_ip)" >> $GITHUB_OUTPUT
 
   f5xc-automation:
     runs-on: ubuntu-latest

@@ -27,6 +27,11 @@ output "public_ips" {
   value = module.instance.public_ips
 }
 
+output "private_ip" {
+  description = "First private IP (primary instance)"
+  value       = module.instance.private_ips[0]
+}
+
 output "private_ips" {
   value = module.instance.private_ips
 }

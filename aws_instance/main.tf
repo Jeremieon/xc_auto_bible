@@ -34,6 +34,6 @@ module "instance" {
   my_private_subnet_id = module.vpc.my_private_subnet_id
   instance_count       = var.instance_count
   key_name             = var.key_name
-  user_data_script     = var.user_data_script
+  user_data_script     = file("${path.module}/user_data.sh")
   ssh_public_key       = var.ssh_public_key
 }
