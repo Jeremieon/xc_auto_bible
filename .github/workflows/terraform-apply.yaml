@@ -9,8 +9,8 @@ jobs:
   aws-instance-deployment:
     runs-on: ubuntu-latest
     outputs:
-      public_ip: ${{ steps.tf-output.outputs.public_ip }}
-      private_ip: ${{ steps.tf-output.outputs.private_ip }}
+      public_ip: ${{ steps.get-outputs.outputs.public_ip }}
+      private_ip: ${{ steps.get-outputs.outputs.private_ip }}
 
     steps:
       - name: Checkout repo
@@ -21,6 +21,7 @@ jobs:
         with:
           terraform_version: 1.6.6
           cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+          terraform_wrapper: false
       - name: Terraform Init
         run: |
           cd aws_instance
@@ -36,12 +37,23 @@ jobs:
           cd aws_instance
           terraform apply -auto-approve
 
-      - name: Export Instance IPs
-        id: tf-output
+      - name: Get Outputs from Terraform Cloud
+        id: get-outputs
         run: |
           cd aws_instance
-          echo "public_ip=$(terraform output -raw public_ip)" >> $GITHUB_OUTPUT
-          echo "private_ip=$(terraform output -raw private_ip)" >> $GITHUB_OUTPUT
+
+          # Wait a moment for outputs to be available
+          sleep 5
+
+          # Get outputs
+          PUBLIC_IP=$(terraform output -raw public_ip)
+          PRIVATE_IP=$(terraform output -raw private_ip)
+
+          echo "Public IP: $PUBLIC_IP"
+          echo "Private IP: $PRIVATE_IP"
+
+          echo "public_ip=$PUBLIC_IP" >> $GITHUB_OUTPUT
+          echo "private_ip=$PRIVATE_IP" >> $GITHUB_OUTPUT
 
   f5xc-automation:
     runs-on: ubuntu-latest
@@ -54,15 +66,22 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
+      - name: Debug - Check IP values
+        run: |
+          echo "Received Public IP: ${{ needs.aws-instance-deployment.outputs.public_ip }}"
+          echo "Received Private IP: ${{ needs.aws-instance-deployment.outputs.private_ip }}"
+
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
         with:
           cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+          terraform_wrapper: false
+
       - name: Setup Certificate
         run: |
           cd f5-xc-lb
           echo "${{ secrets.P12_CERTIFICATE_BASE64 }}" | base64 -d > api.p12
-      
+
       - name: Deploy F5XC HTTP only Load Balancer
         env:
           VES_P12_CONTENT: ${{ secrets.P12_CERTIFICATE_BASE64 }}
