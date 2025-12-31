@@ -13,3 +13,14 @@ variable "public_ip" {
   description = "IP address passed from the AWS job"
   type        = string
 }
+
+variable "public_ip" {
+  description = "Public IP from AWS instance"
+  type        = string
+}
+
+variable "volterra_url" {
+  description = "Volterra API URL"
+  type        = string
+  default     = "https://f5-emea-ent.console.ves.volterra.io/api"
+}

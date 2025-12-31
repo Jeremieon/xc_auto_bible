@@ -9,6 +9,8 @@ terraform {
     }
   }
 
+  
+
   required_providers {
     volterra = {
       source  = "volterraedge/volterra"
@@ -19,9 +21,12 @@ terraform {
 
 
 
+# provider "volterra" {
+#   api_p12_file = "${path.module}/api.p12"
+#   url          = "https://${var.tenant_name}.console.ves.volterra.io/api"
+# }
+
 provider "volterra" {
-  api_p12_file = "${path.module}/api.p12"
-  url          = "https://${var.tenant_name}.console.ves.volterra.io/api"
+  # VES_P12_CONTENT environment variable is used automatically
+  url = var.volterra_url
 }
-
-
