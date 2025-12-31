@@ -9,13 +9,13 @@ terraform {
   }
 }
 
-resource "local_file" "cert_file" {
-  content_base64 = var.api_p12
-  filename       = "${path.module}/certificate.p12"
-}
+# resource "local_file" "cert_file" {
+#   content_base64 = var.api_p12
+#   filename       = "${path.module}/certificate.p12"
+# }
 
 provider "volterra" {
-  api_p12_file = local_file.cert_file.filename
+  api_p12_file = base64decode(var.api_p12)
   url          = "https://${var.tenant_name}.console.ves.volterra.io/api"
 }
 

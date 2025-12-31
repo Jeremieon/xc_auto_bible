@@ -58,7 +58,11 @@ jobs:
         uses: hashicorp/setup-terraform@v3
         with:
           cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
-
+      - name: Debug Files
+        run: |
+          cd f5-xc-lb
+          ls -la
+          grep -r "api_p12" .
       - name: Deploy F5XC HTTP only Load Balancer
         run: |
           cd f5-xc-lb
