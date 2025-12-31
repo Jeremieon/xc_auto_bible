@@ -2,6 +2,7 @@ variable "api_p12" {
   description = "Base64 encoded content of the .p12 file"
   type        = string
   sensitive   = true
+  default = ""
 }
 
 variable "tenant_name" {

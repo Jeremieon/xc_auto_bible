@@ -36,7 +36,7 @@ jobs:
           cd aws_instance
           terraform apply -auto-approve
 
-      - name: Export Instance IP
+      - name: Export Instance IPs
         id: tf-output
         run: |
           cd aws_instance
