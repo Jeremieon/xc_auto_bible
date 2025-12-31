@@ -51,6 +51,7 @@ variable "aws_ami" {
 variable "user_data_script" {
   description = "Script run after Vm deployment"
   type        = string
+  default     = ""
 }
 
 variable "key_name" {
