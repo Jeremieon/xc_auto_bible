@@ -1,5 +1,14 @@
 terraform {
   required_version = ">= 0.14.0"
+
+  backend "remote" {
+    organization = "jeremieonk"
+
+    workspaces {
+      name = "xc_auto_bible"
+    }
+  }
+
   required_providers {
     volterra = {
       source  = "volterraedge/volterra"
@@ -7,6 +16,8 @@ terraform {
     }
   }
 }
+
+
 
 provider "volterra" {
   api_p12_file = "${path.module}/api.p12"
