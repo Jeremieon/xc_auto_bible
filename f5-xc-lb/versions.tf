@@ -5,7 +5,7 @@ terraform {
     organization = "jeremieonk"
 
     workspaces {
-      name = "xc_auto_bible"
+      name = "xc_me"
     }
   }
 
