@@ -38,7 +38,7 @@ resource "volterra_origin_pool" "http-origin-pool" {
   origin_servers {
 
     public_ip {
-      ip = "${var.public_ip}"
+      ip = var.public_ip
     } 
   }
   port                  = 8081
@@ -59,7 +59,7 @@ resource "volterra_origin_pool" "http-origin-pool" {
 resource "volterra_http_loadbalancer" "http-lb" {
   name        = "${var.namespace}-tf-http-lb"
   namespace   = var.namespace
-  domains     = ["${var.namespace}-emea-ent.f5demos.com"]
+  domains     = ["${var.namespace}.emea-ent.f5demos.com"]
  
   advertise_on_public_default_vip = true
 
