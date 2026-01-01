@@ -58,7 +58,7 @@ resource "aws_security_group" "private_sg" {
     from_port       = -1
     to_port         = -1
     protocol        = "icmp"
-    cidr_blocks     = ["0.0.0.0/0"]
+    security_groups = [aws_security_group.my_app_sg.id]
   }
 
 
