@@ -3,8 +3,7 @@ name: F5XC Automation - AWS Instance Deployment
 on:
   push:
     branches:
-      - test-automation
-
+      - testing
 jobs:
   aws-instance-deployment:
     runs-on: ubuntu-latest
