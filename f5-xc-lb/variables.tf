@@ -10,11 +10,6 @@ variable "namespace" {
 }
 
 variable "public_ip" {
-  description = "IP address passed from the AWS job"
-  type        = string
-}
-
-variable "public_ip" {
   description = "Public IP from AWS instance"
   type        = string
 }
