@@ -55,19 +55,19 @@ resource "aws_security_group" "private_sg" {
 
 
   ingress {
-    from_port = 22
-    to_port   = 22
-    protocol  = "tcp"
-    #cidr_blocks     = ["0.0.0.0/0"]
-    security_groups = [aws_security_group.my_app_sg.id] #only instances in the public SG can talk to the private instance on the allowed port.
-  }
-  ingress {
     from_port       = -1
     to_port         = -1
     protocol        = "icmp"
-    security_groups = [aws_security_group.my_app_sg.id]
+    cidr_blocks     = ["0.0.0.0/0"]
   }
 
+
+   ingress {
+    from_port = 22
+    to_port   = 22
+    protocol  = "tcp"
+    security_groups = [aws_security_group.my_app_sg.id]
+  }
 
   egress {
     from_port   = 0
@@ -109,7 +109,7 @@ resource "aws_instance" "private_app_server" {
   subnet_id       = var.my_private_subnet_id
   count           = var.instance_count
   key_name        = aws_key_pair.my_laptop_key.key_name
-  security_groups = [aws_security_group.private_sg.id]
+  vpc_security_group_ids = [aws_security_group.private_sg.id]
   user_data       = var.user_data_script
 
 

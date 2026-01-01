@@ -5,22 +5,7 @@ on:
   #   branches:
   #     - testing
 jobs:
-  detect-changes:
-    runs-on: ubuntu-latest
-    outputs:
-      aws_changed: ${{ steps.changes.outputs.aws }}
-    steps:
-      - uses: actions/checkout@v4
-      - uses: dorny/paths-filter@v2
-        id: changes
-        with:
-          filters: |
-            aws:
-              - 'aws_instance/**'
-
   aws-instance-deployment:
-    needs: detect-changes
-    if: needs.detect-changes.outputs.aws_changed == 'true'
     runs-on: ubuntu-latest
     outputs:
       public_ip: ${{ steps.get-outputs.outputs.public_ip }}
