@@ -1,3 +1,9 @@
+.idea/
+docs/_build/
+_build/
+docs/errors.txt
+.DS_Store
+.vscode
 .terraform/
 *.managed.publishsettings
 .terraform.tfstate.lock.info

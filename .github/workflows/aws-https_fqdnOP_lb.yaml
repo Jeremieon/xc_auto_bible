@@ -1,9 +1,10 @@
-name: F5XC Automation - AWS Instance Deployment
+name: AWS&F5XC(HTTPS-fqdnOP)
 
 on:
-  push:
-    branches:
-      - testing
+  workflow_dispatch:
+  # push:
+  #   branches:
+  #     - testing
 jobs:
   aws-instance-deployment:
     runs-on: ubuntu-latest
@@ -80,7 +81,7 @@ jobs:
           VES_P12_PASSWORD: ${{ secrets.VES_P12_PASSWORD }}
           TF_VAR_public_ip: ${{ needs.aws-instance-deployment.outputs.public_ip }}
         run: |
-          cd f5-xc-lb
+          cd f5-xc-https-fqdnOP
           echo "Running F5XC terraform Automation"
           echo "Using Public IP: $TF_VAR_public_ip"
           terraform init

@@ -3,6 +3,11 @@ variable "tenant_name" {
   type        = string
 }
 
+variable "fqdn_name" {
+  description = "Service to expose"
+  type = string
+  
+}
 variable "namespace" {
   description = "REQUIRED: F5 Distributed Cloud namespace to deploy objects into"
   type        = string

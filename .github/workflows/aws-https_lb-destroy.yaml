@@ -1,5 +1,4 @@
-# .github/workflows/destroy-full-stack.yml
-name: Destroy Full Stack
+name: AWS&F5XC(HTTPS)
 
 on:
   workflow_dispatch:
@@ -41,8 +40,8 @@ jobs:
           VES_P12_PASSWORD: ${{ secrets.VES_P12_PASSWORD }}
           TF_VAR_public_ip: "0.0.0.0"
         run: |
-          cd f5-xc-lb
-          echo "🗑️  Destroying F5XC Load Balancer..."
+          cd f5-xc-https-autocert
+          echo "Destroying F5XC Load Balancer..."
           terraform init
           terraform destroy -auto-approve
           echo "F5XC resources destroyed"

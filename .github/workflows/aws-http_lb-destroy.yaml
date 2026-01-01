@@ -1,0 +1,80 @@
+name: AWS&F5XC(HTTP) DESTROY
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm_destroy:
+        description: 'Type "DESTROY" to confirm deletion of all resources'
+        required: true
+        type: string
+
+jobs:
+  validate-destroy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate Confirmation
+        run: |
+          if [ "${{ github.event.inputs.confirm_destroy }}" != "DESTROY" ]; then
+            echo "Destroy cancelled. You must type 'DESTROY' to confirm."
+            exit 1
+          fi
+          echo "Destroy confirmed. Proceeding with resource deletion..."
+
+  destroy-f5xc:
+    runs-on: ubuntu-latest
+    needs: validate-destroy
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+          terraform_wrapper: false
+
+      - name: Destroy F5XC Load Balancer
+        env:
+          VES_P12_CONTENT: ${{ secrets.P12_CERTIFICATE_BASE64 }}
+          VES_P12_PASSWORD: ${{ secrets.VES_P12_PASSWORD }}
+          TF_VAR_public_ip: "0.0.0.0"
+        run: |
+          cd f5-xc-lb
+          echo "🗑️  Destroying F5XC Load Balancer..."
+          terraform init
+          terraform destroy -auto-approve
+          echo "F5XC resources destroyed"
+
+  destroy-aws:
+    runs-on: ubuntu-latest
+    needs: destroy-f5xc
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.6.6
+          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+          terraform_wrapper: false
+
+      - name: Destroy AWS Infrastructure
+        run: |
+          cd aws_instance
+          echo "Destroying AWS Infrastructure..."
+          terraform init
+          terraform destroy -auto-approve
+          echo "AWS resources destroyed"
+
+  cleanup-complete:
+    runs-on: ubuntu-latest
+    needs: [destroy-f5xc, destroy-aws]
+    steps:
+      - name: Destruction Summary
+        run: |
+          echo "Full stack destruction complete!"
+          echo "F5XC Load Balancer - Destroyed"
+          echo "AWS Infrastructure - Destroyed"
