@@ -22,7 +22,7 @@ jobs:
           terraform_version: 1.6.6
           cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
           terraform_wrapper: false
-          
+
       - name: Terraform Init
         run: |
           cd aws_instance
@@ -78,6 +78,7 @@ jobs:
       - name: Deploy F5XC HTTP only Load Balancer
         env:
           VES_P12_CONTENT: ${{ secrets.P12_CERTIFICATE_BASE64 }}
+          VES_P12_PASSWORD: ${{ secrets.VES_P12_PASSWORD }}
           TF_VAR_public_ip: ${{ needs.aws-instance-deployment.outputs.public_ip }}
         run: |
           cd f5-xc-lb
