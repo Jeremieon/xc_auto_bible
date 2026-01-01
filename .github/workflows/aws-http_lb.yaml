@@ -16,9 +16,7 @@ jobs:
         with:
           filters: |
             aws:
-              - 'aws_instance/'
-            f5xc:
-              - 'f5-xc-lb/'
+              - 'aws_instance/**'
 
   aws-instance-deployment:
     needs: detect-changes
