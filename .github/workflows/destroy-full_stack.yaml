@@ -16,10 +16,10 @@ jobs:
       - name: Validate Confirmation
         run: |
           if [ "${{ github.event.inputs.confirm_destroy }}" != "DESTROY" ]; then
-            echo "❌ Destroy cancelled. You must type 'DESTROY' to confirm."
+            echo "Destroy cancelled. You must type 'DESTROY' to confirm."
             exit 1
           fi
-          echo "✅ Destroy confirmed. Proceeding with resource deletion..."
+          echo "Destroy confirmed. Proceeding with resource deletion..."
 
   destroy-f5xc:
     runs-on: ubuntu-latest
@@ -45,7 +45,7 @@ jobs:
           echo "🗑️  Destroying F5XC Load Balancer..."
           terraform init
           terraform destroy -auto-approve
-          echo "✅ F5XC resources destroyed"
+          echo "F5XC resources destroyed"
 
   destroy-aws:
     runs-on: ubuntu-latest
@@ -65,10 +65,10 @@ jobs:
       - name: Destroy AWS Infrastructure
         run: |
           cd aws_instance
-          echo "🗑️  Destroying AWS Infrastructure..."
+          echo "Destroying AWS Infrastructure..."
           terraform init
           terraform destroy -auto-approve
-          echo "✅ AWS resources destroyed"
+          echo "AWS resources destroyed"
 
   cleanup-complete:
     runs-on: ubuntu-latest
@@ -76,6 +76,6 @@ jobs:
     steps:
       - name: Destruction Summary
         run: |
-          echo "🎉 Full stack destruction complete!"
-          echo "✅ F5XC Load Balancer - Destroyed"
-          echo "✅ AWS Infrastructure - Destroyed"
+          echo "Full stack destruction complete!"
+          echo "F5XC Load Balancer - Destroyed"
+          echo "AWS Infrastructure - Destroyed"
