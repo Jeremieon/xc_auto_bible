@@ -1,0 +1,94 @@
+name: "Terraform Cloud CI/CD"
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  terraform:
+    name: "Terraform Deploy"
+    runs-on: ubuntu-latest
+    outputs:
+      public_ip: ${{ steps.tf-output.outputs.public_ip }}
+      private_ip: ${{ steps.tf-output.outputs.private_ip }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+          terraform_wrapper: true
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Format Check
+        run: terraform fmt -check
+        continue-on-error: true
+
+      - name: Terraform Validate
+        run: terraform validate
+
+      - name: Terraform Plan
+        run: terraform plan -no-color
+        if: github.event_name == 'pull_request'
+
+      - name: Terraform Apply
+        run: terraform apply -auto-approve
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
+      - name: Get Terraform Outputs
+        id: tf-output
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        run: |
+          echo "public_ip=$(terraform output -raw public_vm_ip)" >> $GITHUB_OUTPUT
+          echo "private_ip=$(terraform output -raw private_vm_private_ip)" >> $GITHUB_OUTPUT
+
+#   # Second job that uses the outputs
+#   deploy-app:
+#     name: 'Deploy Application'
+#     runs-on: ubuntu-latest
+#     needs: terraform
+#     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
+#     steps:
+#     - name: Use Terraform Outputs
+#       run: |
+#         echo "Public VM IP: ${{ needs.terraform.outputs.public_ip }}"
+#         echo "Private VM IP: ${{ needs.terraform.outputs.private_ip }}"
+
+#     - name: Wait for VM to be ready
+#       run: |
+#         echo "Waiting for VM initialization..."
+#         sleep 60
+
+#     - name: Test OWASP Juice Shop
+#       run: |
+#         curl -f http://${{ needs.terraform.outputs.public_ip }}:3000 || echo "App not ready yet"
+
+#     - name: SSH and Run Commands (example)
+#       run: |
+#         # Add your SSH key to GitHub secrets as SSH_PRIVATE_KEY
+#         # Then you can SSH and run commands:
+#         # ssh -o StrictHostKeyChecking=no azureuser@${{ needs.terraform.outputs.public_ip }} "docker ps"
+#         echo "You can SSH here using the public IP"
+
+#   # Example: Third job for testing/scanning
+#   security-scan:
+#     name: 'Security Scan'
+#     runs-on: ubuntu-latest
+#     needs: [terraform, deploy-app]
+#     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
+#     steps:
+#     - name: Run Security Scan
+#       run: |
+#         echo "Scanning http://${{ needs.terraform.outputs.public_ip }}:3000"
+#         # Add your security scanning tool here (e.g., OWASP ZAP, Trivy, etc.)
