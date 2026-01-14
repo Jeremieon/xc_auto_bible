@@ -39,11 +39,11 @@ resource "volterra_origin_pool" "http-origin-pool" {
 
     public_ip {
       ip = var.public_ip
-    } 
+    }
   }
   port                  = 8081
   same_as_endpoint_port = true
-  no_tls = true
+  no_tls                = true
   healthcheck {
     namespace = var.namespace
     name      = volterra_healthcheck.http-health-check.name
@@ -57,68 +57,16 @@ resource "volterra_origin_pool" "http-origin-pool" {
 # Create Load Balancer #
 #=======================
 resource "volterra_http_loadbalancer" "http-lb" {
-  name        = "${var.namespace}-tf-http-lb"
-  namespace   = var.namespace
-  domains     = ["${var.namespace}.emea-ent.f5demos.com"]
- 
+  name      = "${var.namespace}-tf-http-lb"
+  namespace = var.namespace
+  domains   = ["${var.namespace}.emea-ent.f5demos.com"]
+
   advertise_on_public_default_vip = true
 
-  #  https {
-  #   port          = 443
-  #   http_redirect = true
-  #   add_hsts      = true
-
-  #   tls_cert_params {
-  #     no_mtls = true
-  #     certificates {
-  #       name = "denis-gee"
-  #       namespace = var.namespace
-  #     }
-  #   }
-  # }
-  http{
-      dns_volterra_managed = true
-      port = 80
-    }
-  # https_auto_cert {
-  # add_hsts = true
-
-  # connection_idle_timeout = "60000"
-  # no_mtls = true
-  # tls_config{
-  #     default_security= true
-  # }
-
-  # // One of the arguments from this list "default_loadbalancer non_default_loadbalancer" can be set
-  # header_transformation_type {
-  #   // One of the arguments from this list "default_header_transformation legacy_header_transformation preserve_case_header_transformation proper_case_header_transformation" must be set
-  
-  #   default_header_transformation = true
-  # }
-  # non_default_loadbalancer = true
-  # http_protocol_options {
-  #   // One of the arguments from this list "http_protocol_enable_v1_only http_protocol_enable_v1_v2 http_protocol_enable_v2_only" must be set
-
-  #   http_protocol_enable_v1_v2 = true
-  # }
-  # http_redirect = true
-
-  # // One of the arguments from this list "disable_path_normalize enable_path_normalize" must be set
-
-  # enable_path_normalize = true
-
-  # // One of the arguments from this list "port port_ranges" must be set
-
-  # port = "443"
-
-  # // One of the arguments from this list "append_server_name default_header pass_through server_name" can be set
-
-  # default_header = true
-
-  # // One of the arguments from this list "tls_cert_params tls_parameters" must be set
-
-  # }
-  #}
+  http {
+    dns_volterra_managed = true
+    port                 = 80
+  }
   default_route_pools {
     pool {
       name      = volterra_origin_pool.http-origin-pool.name
@@ -128,8 +76,8 @@ resource "volterra_http_loadbalancer" "http-lb" {
     priority         = 1
     endpoint_subsets = {}
   }
-  disable_api_definition           = true
-  
+  disable_api_definition = true
+
   disable_waf                      = true
   add_location                     = true
   no_challenge                     = true

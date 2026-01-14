@@ -1,9 +1,6 @@
 name: AWS&F5XC(HTTP)
 on:
   workflow_dispatch:
-  # push:
-  #   branches:
-  #     - testing
 jobs:
   aws-instance-deployment:
     runs-on: ubuntu-latest
@@ -24,23 +21,23 @@ jobs:
 
       - name: Terraform Init
         run: |
-          cd aws_instance
+          cd f5xc-http-lb/aws_instance
           terraform init
 
       - name: Terraform Plan
         run: |
-          cd aws_instance
+          cd f5xc-http-lb/aws_instance
           terraform plan
 
       - name: Terraform Apply
         run: |
-          cd aws_instance
+          cd f5xc-http-lb/aws_instance
           terraform apply -auto-approve
 
       - name: Get Outputs from Terraform Cloud
         id: get-outputs
         run: |
-          cd aws_instance
+          cd f5xc-http-lb/aws_instance
 
           # Wait a moment for outputs to be available
           sleep 5

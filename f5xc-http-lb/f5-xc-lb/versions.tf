@@ -9,7 +9,7 @@ terraform {
     }
   }
 
-  
+
 
   required_providers {
     volterra = {
@@ -19,14 +19,7 @@ terraform {
   }
 }
 
-
-
-# provider "volterra" {
-#   api_p12_file = "${path.module}/api.p12"
-#   url          = "https://${var.tenant_name}.console.ves.volterra.io/api"
-# }
-
 provider "volterra" {
-  
+
   url = var.volterra_url
 }
