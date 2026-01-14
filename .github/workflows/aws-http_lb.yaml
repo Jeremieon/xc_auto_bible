@@ -77,7 +77,7 @@ jobs:
           VES_P12_PASSWORD: ${{ secrets.VES_P12_PASSWORD }}
           TF_VAR_public_ip: ${{ needs.aws-instance-deployment.outputs.public_ip }}
         run: |
-          cd f5-xc-lb
+          cd f5xc-http-lb/f5-xc-lb
           echo "Running F5XC terraform Automation"
           echo "Using Public IP: $TF_VAR_public_ip"
           terraform init
