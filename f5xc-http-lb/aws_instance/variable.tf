@@ -5,15 +5,6 @@ variable "aws_region" {
   default     = "us-east-1"
 }
 
-
-variable "organization" {
-  description = "Terraform cloud organization"
-  type        = string
-}
-variable "workspaces" {
-  description = "Terraform cloud workspaces"
-  type        = string
-}
 variable "vpc_cidr_block" {
   description = "The CIDR block for the VPC"
   type        = string
