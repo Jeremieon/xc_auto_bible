@@ -1,9 +1,9 @@
 terraform {
   backend "remote" {
-    organization = "jeremieonk"
+    organization = var.organization
 
     workspaces {
-      name = "xc_auto_bible"
+      name = var.workspaces
     }
   }
 }
