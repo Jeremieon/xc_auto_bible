@@ -98,13 +98,6 @@ resource "volterra_http_loadbalancer" "https_auto_cert-lb" {
   disable_client_side_defense      = true
   no_service_policies              = true
   source_ip_stickiness             = true
-  more_option {
-    disable_default_error_pages = true
-    custom_errors = {
-      "4"   = file("${path.module}/custom_pages/blocked.html")
-      "5"   = file("${path.module}/custom_pages/service.html")
-      "429" = file("${path.module}/custom_pages/tmrqst.html")
-    }
-  }
+ 
 }
 
