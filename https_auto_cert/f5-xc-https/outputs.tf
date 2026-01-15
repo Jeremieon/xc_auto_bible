@@ -1,5 +1,5 @@
 output "http_lb_fqdn" {
-  value = volterra_http_loadbalancer.http-lb.domains
+  value = volterra_http_loadbalancer.https_auto_cert-lb.domains
 }
 
 output "http_lb_public_ip" {

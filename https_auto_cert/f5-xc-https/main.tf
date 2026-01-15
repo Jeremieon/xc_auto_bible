@@ -2,7 +2,7 @@
 # Get LB State Data #
 #=====================
 data "volterra_http_loadbalancer_state" "lb-state" {
-  name      = volterra_http_loadbalancer.http-lb.name
+  name      = volterra_http_loadbalancer.https_auto_cert-lb.name
   namespace = var.namespace
 }
 
