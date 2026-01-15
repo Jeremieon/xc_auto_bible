@@ -2,9 +2,6 @@ name: AWS&F5XC(HTTPS)
 
 on:
   workflow_dispatch:
-  # push:
-  #   branches:
-  #     - testing
 jobs:
   aws-instance-deployment:
     runs-on: ubuntu-latest
@@ -25,23 +22,23 @@ jobs:
 
       - name: Terraform Init
         run: |
-          cd aws_instance
+          cd https_auto_cert/aws_instance
           terraform init
 
       - name: Terraform Plan
         run: |
-          cd aws_instance
+          cd https_auto_cert/aws_instance
           terraform plan
 
       - name: Terraform Apply
         run: |
-          cd aws_instance
+          cd https_auto_cert/aws_instance
           terraform apply -auto-approve
 
       - name: Get Outputs from Terraform Cloud
         id: get-outputs
         run: |
-          cd aws_instance
+          cd https_auto_cert/aws_instance
 
           # Wait a moment for outputs to be available
           sleep 5
@@ -81,7 +78,7 @@ jobs:
           VES_P12_PASSWORD: ${{ secrets.VES_P12_PASSWORD }}
           TF_VAR_public_ip: ${{ needs.aws-instance-deployment.outputs.public_ip }}
         run: |
-          cd f5-xc-https-autocert
+          cd https_auto_cert/f5-xc-https
           echo "Running F5XC terraform Automation"
           echo "Using Public IP: $TF_VAR_public_ip"
           terraform init
