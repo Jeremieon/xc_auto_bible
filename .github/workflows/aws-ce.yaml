@@ -32,16 +32,17 @@ jobs:
 
       - name: Terraform Plan
         env:
-          TF_VAR_api_p12_file: "./api-creds.p12"
           VES_P12_PASSWORD: ${{ secrets.VES_P12_PASSWORD }}
+          TF_VAR_api_p12_file: "./api-creds.p12"
+
         run: |
           cd customer-edge-lb/f5ce-aws
           terraform plan
 
       - name: Terraform Apply
         env:
-          VES_P12_CONTENT: ${{ secrets.P12_CERTIFICATE_BASE64 }}
           VES_P12_PASSWORD: ${{ secrets.VES_P12_PASSWORD }}
+          TF_VAR_api_p12_file: "./api-creds.p12"
         run: |
           cd customer-edge-lb/f5ce-aws
           terraform apply -auto-approve
@@ -85,8 +86,8 @@ jobs:
 
       - name: Deploy F5XC HTTP only Load Balancer
         env:
-          VES_P12_CONTENT: ${{ secrets.P12_CERTIFICATE_BASE64 }}
           VES_P12_PASSWORD: ${{ secrets.VES_P12_PASSWORD }}
+          TF_VAR_api_p12_file: "./api-creds.p12"
           TF_VAR_inside_network_IP: ${{ needs.ce-instance-deployment.outputs.private_app_ip }}
           TF_VAR_site_name: ${{ needs.ce-instance-deployment.outputs.aws_site_name }}
         run: |
