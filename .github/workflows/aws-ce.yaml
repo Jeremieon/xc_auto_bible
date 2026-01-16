@@ -27,8 +27,9 @@ jobs:
       - name: Setup F5XC Credentials
         run: |
           cd customer-edge-lb/f5ce-aws
-          echo "${{ secrets.P12_CERTIFICATE_BASE64 }}" | base64 -d > api-creds.p12
-          chmod 600 api-creds.p12
+          echo "${{ secrets.P12_CERTIFICATE_BASE64 }}" | base64 -d > /tmp/api-creds.p12
+          chmod 600 /tmp/api-creds.p12
+          ls -lh /tmp/api-creds.p12
 
       - name: Terraform Plan
         env:
@@ -37,7 +38,7 @@ jobs:
 
         run: |
           cd customer-edge-lb/f5ce-aws
-          terraform plan
+          terraform plan -var="api_p12_file=/tmp/api-creds.p12"
 
       - name: Terraform Apply
         env:

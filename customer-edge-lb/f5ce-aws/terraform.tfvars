@@ -14,7 +14,6 @@ node_count        = 1
 aws-ec2-flavor    = "m5.2xlarge"
 # F5XC API Configuration
 volterra_url         = "https://f5-emea-ent.console.ves.volterra.io/api"
-f5xc_api_p12_file    = "./api-creds.p12"
 f5xc_sms_description = "F5XC SMSv2 AWS site created with Terraform"
 
 slo-private-ip = "10.0.2.10"
