@@ -31,7 +31,7 @@ jobs:
           VES_P12_PASSWORD: ${{ secrets.VES_P12_PASSWORD }}
         run: |
           cd customer-edge-lb/f5ce-aws
-          terraform plan
+          terraform plan -target=aws_vpc.main_vpc -target=aws_instance.smsv2-aws-tf
 
       - name: Terraform Apply
         env:
