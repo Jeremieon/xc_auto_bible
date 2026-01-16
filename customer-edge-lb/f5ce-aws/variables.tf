@@ -72,6 +72,9 @@ variable "name-prefix" {
   description = "Name of the instance"
   type        = string
 }
+variable "api_p12_file" {
+  default = "./api-creds.p12"
+}
 
 variable "aws_region" {
   description = "region instance was deployed"

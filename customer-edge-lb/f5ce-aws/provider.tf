@@ -17,5 +17,8 @@ provider "aws" {
 }
 
 provider "volterra" {
-  url = var.volterra_url
+  url          = var.volterra_url
+  api_p12_file = var.api_p12_file
 }
+
+
