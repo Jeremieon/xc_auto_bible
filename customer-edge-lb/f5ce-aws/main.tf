@@ -289,7 +289,7 @@ resource "aws_eip_association" "eip_attach" {
 #
 resource "aws_key_pair" "my_key" {
   key_name   = "${var.name-prefix}-key"
-  public_key = file("~/.ssh/id_rsa.pub")
+  public_key = var.ssh_public_key
 }
 resource "aws_instance" "smsv2-aws-tf" {
   depends_on    = [aws_security_group.EC2-CE-sg-SLI]

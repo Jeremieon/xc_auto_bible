@@ -46,17 +46,14 @@ variable "aws-ec2-flavor" {
     error_message = "Invalid EC2 instance type. Allowed values are: m5.2xlarge or m5.4xlarge."
   }
 }
-
-variable "f5xc_api_url" {
+variable "ssh_public_key" {
+  description = "SSH public key for EC2 access"
+  type        = string
+}
+variable "volterra_url" {
   type    = string
   default = "https://your-tenant.console.ves.volterra.io/api"
 }
-
-# variable "aws_ssh_key" {
-#   description = "AWS SSH key pair name for EC2 instance access"
-#   type        = string
-#   default     = "my-ssh-key"
-# }
 
 variable "aws-region" {
   description = "AWS region for F5XC CE deployment"
