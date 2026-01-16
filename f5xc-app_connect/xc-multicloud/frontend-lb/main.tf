@@ -82,7 +82,7 @@ resource "volterra_origin_pool" "http-origin-pool" {
 resource "volterra_http_loadbalancer" "https_auto_cert-lb" {
   name      = "${var.namespace}-tf-http-lb"
   namespace = var.namespace
-  domains   = ["${var.namespace}s.labtestdemo.com"]
+  domains   = ["${var.namespace}.${var.domain}"]
 
   https_auto_cert {
     add_hsts                = true

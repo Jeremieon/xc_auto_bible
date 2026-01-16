@@ -1,18 +1,3 @@
-terraform {
-  required_providers {
-    volterra = {
-      source  = "volterraedge/volterra"
-      version = ">=0.11.42"
-    }
-
-  }
-}
-
-provider "volterra" {
-  api_p12_file = var.api_p12_file
-  url          = var.xc_api_url
-}
-
 
 #=====================
 # Get LB State Data #
@@ -64,6 +49,7 @@ resource "volterra_origin_pool" "http-origin-pool" {
 
     }
   }
+
   port                  = var.port
   same_as_endpoint_port = true
   no_tls                = true
@@ -76,13 +62,14 @@ resource "volterra_origin_pool" "http-origin-pool" {
   endpoint_selection     = "LOCALPREFERED"
 }
 
+
 #=======================
 # Create Load Balancer #
 #=======================
 resource "volterra_http_loadbalancer" "https_auto_cert-lb" {
   name      = "${var.namespace}-tf-http-lb"
   namespace = var.namespace
-  domains   = ["${var.namespace}s.labtestdemo.com"]
+  domains   = ["${var.namespace}s.${var.domain}"]
 
   https_auto_cert {
     add_hsts                = true

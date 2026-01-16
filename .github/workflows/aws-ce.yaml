@@ -1,16 +1,13 @@
-name: AWS&F5XC(HTTPS-fqdnOP)
+name: AWS&F5XC(CE-Only)
 
 on:
   workflow_dispatch:
-  # push:
-  #   branches:
-  #     - testing
 jobs:
   aws-instance-deployment:
     runs-on: ubuntu-latest
     outputs:
-      public_ip: ${{ steps.get-outputs.outputs.public_ip }}
-      private_ip: ${{ steps.get-outputs.outputs.private_ip }}
+      aws_site_name: ${{ steps.get-outputs.outputs.aws_site_name }}
+      private_app_ip: ${{ steps.get-outputs.outputs.private_ip }}
 
     steps:
       - name: Checkout repo
@@ -25,12 +22,12 @@ jobs:
 
       - name: Terraform Init
         run: |
-          cd aws_instance
+          cd customer-edge-lb/f5ce-aws
           terraform init
 
       - name: Terraform Plan
         run: |
-          cd aws_instance
+          cd customer-edge-lb/f5ce-aws
           terraform plan
 
       - name: Terraform Apply
@@ -47,13 +44,13 @@ jobs:
           sleep 5
 
           # Get outputs
-          PUBLIC_IP=$(terraform output -raw public_ip)
-          PRIVATE_IP=$(terraform output -raw private_ip)
+          SITE_NAME=$(terraform output -raw aws_site_name)
+          PRIVATE_IP=$(terraform output -raw private_app_ip)
 
-          echo "Public IP: $PUBLIC_IP"
+          echo "Public IP: $SITE_NAME"
           echo "Private IP: $PRIVATE_IP"
 
-          echo "public_ip=$PUBLIC_IP" >> $GITHUB_OUTPUT
+          echo "aws_site_name=$SITE_NAME" >> $GITHUB_OUTPUT
           echo "private_ip=$PRIVATE_IP" >> $GITHUB_OUTPUT
 
   f5xc-automation:
@@ -66,8 +63,8 @@ jobs:
 
       - name: Debug - Check IP values
         run: |
-          echo "Received Public IP: ${{ needs.aws-instance-deployment.outputs.public_ip }}"
-          echo "Received Private IP: ${{ needs.aws-instance-deployment.outputs.private_ip }}"
+          echo "Received SITE_NAME: ${{ needs.aws-instance-deployment.outputs.aws_site_name }}"
+          echo "Received Private IP: ${{ needs.aws-instance-deployment.outputs.private_app_ip }}"
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
@@ -79,9 +76,10 @@ jobs:
         env:
           VES_P12_CONTENT: ${{ secrets.P12_CERTIFICATE_BASE64 }}
           VES_P12_PASSWORD: ${{ secrets.VES_P12_PASSWORD }}
-          TF_VAR_public_ip: ${{ needs.aws-instance-deployment.outputs.public_ip }}
+          TF_VAR_inside_network_IP: ${{ needs.aws-instance-deployment.outputs.private_app_ip }}
+          TF_VAR_site_name: ${{ needs.aws-instance-deployment.outputs.aws_site_name }}
         run: |
-          cd f5-xc-https-fqdnOP
+          cd customer-edge-lb/f5xc-ce-https
           echo "Running F5XC terraform Automation"
           echo "Using Public IP: $TF_VAR_public_ip"
           terraform init

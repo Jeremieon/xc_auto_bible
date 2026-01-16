@@ -1,10 +1,4 @@
-variable "api_p12_file" {
-  description = "Path to XC API certificate"
-  type        = string
-  default     = "./api-creds.p12"
-}
-
-variable "xc_api_url" {
+variable "volterra_url" {
   description = "XC API URL"
   type        = string
   default     = "https://f5-emea-ent.console.ves.volterra.io/api"
@@ -14,6 +8,11 @@ variable "namespace" {
   description = "XC deployment namespace"
   type        = string
   default     = "system"
+}
+
+variable "domain" {
+  description = "Loadbalancer domain"
+  type        = string
 }
 
 

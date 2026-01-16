@@ -16,6 +16,11 @@ variable "namespace" {
   default     = "system"
 }
 
+variable "domain" {
+  description = "Loadbalancer domain"
+  type        = string
+}
+
 
 variable "inside_network_IP" {
   description = "Inside network IP where the backend server is located for origin pool"

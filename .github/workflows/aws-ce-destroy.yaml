@@ -1,4 +1,4 @@
-name: AWS&F5XC(HTTPS-fqdnOP) DESTROY
+name: AWS&F5XC(CE-Only) DESTROY
 
 on:
   workflow_dispatch:
@@ -40,7 +40,7 @@ jobs:
           VES_P12_PASSWORD: ${{ secrets.VES_P12_PASSWORD }}
           TF_VAR_public_ip: "0.0.0.0"
         run: |
-          cd f5-xc-https-fqdnOP
+          cd customer-edge-lb/f5ce-aws
           echo "Destroying F5XC Load Balancer..."
           terraform init
           terraform destroy -auto-approve
@@ -63,7 +63,7 @@ jobs:
 
       - name: Destroy AWS Infrastructure
         run: |
-          cd aws_instance
+          cd customer-edge-lb/f5ce-aws
           echo "Destroying AWS Infrastructure..."
           terraform init
           terraform destroy -auto-approve

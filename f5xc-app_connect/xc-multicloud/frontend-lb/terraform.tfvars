@@ -4,5 +4,4 @@ namespace         = "j-agboola"
 site_name         = "jerry-aws-site-9c76"
 inside_network_IP = "10.0.3.38"
 port              = 8000
-
-
+domain            = "labtestdemo.com"
