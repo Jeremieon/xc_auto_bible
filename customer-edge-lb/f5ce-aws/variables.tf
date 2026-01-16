@@ -115,11 +115,6 @@ variable "availability_zone" {
   default     = "us-east-1a"
 }
 
-variable "tosii" {
-  description = "The az for the VPC"
-  type        = string
-  default     = "AstraH07+"
-}
 variable "f5xc_api_p12" {
   type        = string
   description = "Path to F5XC API credentials P12 file (download from F5XC console)"
