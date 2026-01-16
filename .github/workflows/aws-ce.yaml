@@ -38,13 +38,13 @@ jobs:
           VES_P12_CONTENT: ${{ secrets.P12_CERTIFICATE_BASE64 }}
           VES_P12_PASSWORD: ${{ secrets.VES_P12_PASSWORD }}
         run: |
-          cd aws_instance
+          cd customer-edge-lb/f5ce-aws
           terraform apply -auto-approve
 
       - name: Get Outputs from Terraform Cloud
         id: get-outputs
         run: |
-          cd aws_instance
+          cd customer-edge-lb/f5ce-aws
 
           # Wait a moment for outputs to be available
           sleep 5
