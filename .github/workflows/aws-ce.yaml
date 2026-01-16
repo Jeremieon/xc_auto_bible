@@ -34,6 +34,9 @@ jobs:
           terraform plan
 
       - name: Terraform Apply
+        env:
+          VES_P12_CONTENT: ${{ secrets.P12_CERTIFICATE_BASE64 }}
+          VES_P12_PASSWORD: ${{ secrets.VES_P12_PASSWORD }}
         run: |
           cd aws_instance
           terraform apply -auto-approve
