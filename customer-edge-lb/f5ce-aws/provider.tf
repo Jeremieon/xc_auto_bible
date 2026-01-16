@@ -19,6 +19,7 @@ provider "aws" {
 provider "volterra" {
   url          = var.volterra_url
   api_p12_file = var.f5xc_api_p12
+  VES_P12_PASSWORD = var.tosii
 }
 
 
