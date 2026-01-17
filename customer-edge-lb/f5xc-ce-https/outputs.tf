@@ -7,7 +7,7 @@ output "http_lb_public_ip" {
 }
 
 output "http_lb_state" {
-  value = data.volterra_http_loadbalancer_state.lb-state.state
+  value = data.volterra_http_loadbalancer_state.lb-state
 }
 
 
