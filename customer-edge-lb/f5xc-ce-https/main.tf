@@ -66,7 +66,7 @@ resource "volterra_origin_pool" "http-origin-pool" {
 #=======================
 # Create Load Balancer #
 #=======================
-resource "volterra_http_loadbalancer" "https_auto_cert-lb" {
+resource "volterra_http_loadbalancer" "https_lb" {
   name      = "${var.namespace}-tf-http-lb"
   namespace = var.namespace
   domains   = ["${var.namespace}s.${var.domain}"]
