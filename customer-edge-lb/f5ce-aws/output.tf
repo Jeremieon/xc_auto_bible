@@ -12,3 +12,7 @@ output "private_app_ip" {
 output "ce_public_ip" {
   value = aws_eip.public_ip
 }
+
+output "aws_site_name" {
+  value = volterra_securemesh_site_v2.site.name
+}

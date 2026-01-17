@@ -10,6 +10,4 @@ output "http_lb_state" {
   value = data.volterra_http_loadbalancer_state.lb-state.state
 }
 
-output "aws_site_name" {
-  value = volterra_securemesh_site_v2.site.name
-}
+
