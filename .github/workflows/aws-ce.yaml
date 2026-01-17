@@ -37,7 +37,7 @@ jobs:
       - name: Get Outputs from Terraform Cloud
         id: get-outputs
         run: |
-          cd customer-edge-lb/f5ce-aws
+          cd customer-edge-lb/f5xc-ce-https
 
           # Wait a moment for outputs to be available
           sleep 5

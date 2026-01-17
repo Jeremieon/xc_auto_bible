@@ -265,6 +265,10 @@ resource "aws_instance" "private_app_server" {
   key_name               = aws_key_pair.my_key.key_name
   vpc_security_group_ids = [aws_security_group.EC2-CE-sg-SLI.id]
   user_data              = file("${path.module}/user_data.sh")
+  depends_on = [
+    aws_nat_gateway.nat_gw,
+    aws_route.inside_to_nat
+  ]
   tags = {
     Name = format("%s-private-instance", var.name-prefix)
   }
