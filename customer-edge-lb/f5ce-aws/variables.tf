@@ -72,9 +72,6 @@ variable "name-prefix" {
   description = "Name of the instance"
   type        = string
 }
-variable "api_p12_file" {
-  default = "./api-creds.p12"
-}
 
 variable "aws_region" {
   description = "region instance was deployed"
@@ -113,12 +110,6 @@ variable "availability_zone" {
   description = "The az for the VPC"
   type        = string
   default     = "us-east-1a"
-}
-
-variable "f5xc_api_p12" {
-  type        = string
-  description = "Path to F5XC API credentials P12 file (download from F5XC console)"
-  default     = "./api-creds.p12"
 }
 
 variable "f5xc_default_sw_version" {
