@@ -33,7 +33,7 @@ jobs:
       - name: Terraform Plan
         env:
           TF_VAR_f5xc_api_p12: "./api-creds.p12"
-          TF_VAR_VES_P12_PASSWORD: ${{ secrets.VES_P12_PASSWORD }}
+          VES_P12_PASSWORD: ${{ secrets.VES_P12_PASSWORD }}
 
         run: |
           cd customer-edge-lb/f5ce-aws
