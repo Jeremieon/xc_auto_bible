@@ -40,7 +40,7 @@ jobs:
           VES_P12_PASSWORD: ${{ secrets.VES_P12_PASSWORD }}
           TF_VAR_public_ip: "0.0.0.0"
         run: |
-          cd customer-edge-lb/f5xc-ce-https
+          cd customer-edge-lb/f5ce-aws
           echo "Destroying F5XC Load Balancer..."
           terraform init
           terraform destroy -auto-approve
@@ -63,7 +63,7 @@ jobs:
 
       - name: Destroy AWS Infrastructure
         run: |
-          cd customer-edge-lb/f5ce-aws
+          cd customer-edge-lb/f5xc-ce-https
           echo "Destroying AWS Infrastructure..."
           terraform init
           terraform destroy -auto-approve
