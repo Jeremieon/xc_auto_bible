@@ -69,7 +69,7 @@ resource "volterra_origin_pool" "http-origin-pool" {
 resource "volterra_http_loadbalancer" "https_lb" {
   name      = "${var.namespace}-tf-http-lb"
   namespace = var.namespace
-  domains   = ["${var.namespace}s.${var.domain}"]
+  domains   = ["${var.namespace}.${var.domain}"]
 
   https_auto_cert {
     add_hsts                = true
@@ -95,10 +95,7 @@ resource "volterra_http_loadbalancer" "https_lb" {
       }
     }
   }
-  #   http {
-  #     dns_volterra_managed = false
-  #     port                 = 80
-  #   }
+
 
   default_route_pools {
     pool {

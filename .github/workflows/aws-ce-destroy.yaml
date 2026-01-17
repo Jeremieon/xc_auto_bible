@@ -20,7 +20,7 @@ jobs:
           fi
           echo "Destroy confirmed. Proceeding with resource deletion..."
 
-  destroy-f5xc:
+  destroy-f5xc-lb:
     runs-on: ubuntu-latest
     needs: validate-destroy
 
@@ -40,7 +40,7 @@ jobs:
           VES_P12_PASSWORD: ${{ secrets.VES_P12_PASSWORD }}
           TF_VAR_public_ip: "0.0.0.0"
         run: |
-          cd customer-edge-lb/f5ce-aws
+          cd customer-edge-lb/f5xc-ce-https
           echo "Destroying F5XC Load Balancer..."
           terraform init
           terraform destroy -auto-approve
@@ -48,7 +48,7 @@ jobs:
 
   destroy-aws:
     runs-on: ubuntu-latest
-    needs: destroy-f5xc
+    needs: destroy-f5xc-lb
 
     steps:
       - name: Checkout repo
@@ -62,11 +62,8 @@ jobs:
           terraform_wrapper: false
 
       - name: Destroy AWS Infrastructure
-        env:
-          VES_P12_CONTENT: ${{ secrets.P12_CERTIFICATE_BASE64 }}
-          VES_P12_PASSWORD: ${{ secrets.VES_P12_PASSWORD }}
         run: |
-          cd customer-edge-lb/f5xc-ce-https
+          cd customer-edge-lb/f5ce-aws
           echo "Destroying AWS Infrastructure..."
           terraform init
           terraform destroy -auto-approve
@@ -74,7 +71,7 @@ jobs:
 
   cleanup-complete:
     runs-on: ubuntu-latest
-    needs: [destroy-f5xc, destroy-aws]
+    needs: [destroy-f5xc-lb, destroy-aws]
     steps:
       - name: Destruction Summary
         run: |
