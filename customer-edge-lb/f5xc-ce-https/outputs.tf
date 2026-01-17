@@ -3,7 +3,7 @@ output "http_lb_fqdn" {
 }
 
 output "http_lb_public_ip" {
-  value = volterra_http_loadbalancer.https_lb.ip_address
+  value = volterra_http_loadbalancer.https_lb.domains
 }
 
 output "http_lb_state" {
