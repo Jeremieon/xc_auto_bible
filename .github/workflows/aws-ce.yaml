@@ -37,7 +37,6 @@ jobs:
 
         run: |
           cd customer-edge-lb/f5ce-aws
-          export VES_P12_PASSWORD=AstraH07+
           terraform plan
 
       - name: Terraform Apply
