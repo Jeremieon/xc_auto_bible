@@ -1,7 +1,5 @@
 volterra_url = "https://f5-emea-ent.console.ves.volterra.io/api"
 namespace    = "j-agboola"
-# site_name         = "jerry-aws-site-9c76"
-# inside_network_IP = "10.0.3.38"
-port   = 8000
-domain = "labtestdemo.com"
+port         = 3000
+domain       = "labtestdemo.com"
 

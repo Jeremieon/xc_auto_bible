@@ -1,4 +1,4 @@
-name: AWS&F5XC(CE-Only)
+name: F5XC(App Connect)
 
 on:
   workflow_dispatch:
@@ -22,22 +22,22 @@ jobs:
 
       - name: Terraform Init
         run: |
-          cd customer-edge-lb/f5ce-aws
+          cd f5xc-app_connect/f5ce-instance-aws
           terraform init
       - name: Terraform Plan
         run: |
-          cd customer-edge-lb/f5ce-aws
+          cd f5xc-app_connect/f5ce-instance-aws
           terraform plan
 
       - name: Terraform Apply
         run: |
-          cd customer-edge-lb/f5ce-aws
+          cd f5xc-app_connect/f5ce-instance-aws
           terraform apply -auto-approve
 
       - name: Get Outputs from Terraform Cloud
         id: get-outputs
         run: |
-          cd customer-edge-lb/f5ce-aws
+          cd f5xc-app_connect/f5ce-instance-aws
 
           # Wait a moment for outputs to be available
           sleep 5
@@ -52,12 +52,11 @@ jobs:
           echo "aws_site_name=$SITE_NAME" >> $GITHUB_OUTPUT
           echo "private_ip=$PRIVATE_IP" >> $GITHUB_OUTPUT
 
-
   azure-ce-deployment:
     runs-on: ubuntu-latest
     outputs:
-      aws_site_name: ${{ steps.get-outputs.outputs.aws_site_name }}
-      private_app_ip: ${{ steps.get-outputs.outputs.private_ip }}
+      azure_site_name: ${{ steps.get-outputs.outputs.azure_site_name }}
+      backend_private_ip: ${{ steps.get-outputs.outputs.backend_private_ip }}
 
     steps:
       - name: Checkout repo
@@ -72,39 +71,73 @@ jobs:
 
       - name: Terraform Init
         run: |
-          cd customer-edge-lb/f5ce-aws
+          cd f5xc-app_connect/f5xc-instance-azure
           terraform init
       - name: Terraform Plan
         run: |
-          cd customer-edge-lb/f5ce-aws
+          cd f5xc-app_connect/f5xc-instance-azure
           terraform plan
 
       - name: Terraform Apply
         run: |
-          cd customer-edge-lb/f5ce-aws
+          cd f5xc-app_connect/f5xc-instance-azure
           terraform apply -auto-approve
 
       - name: Get Outputs from Terraform Cloud
         id: get-outputs
         run: |
-          cd customer-edge-lb/f5ce-aws
+          cd f5xc-app_connect/f5xc-instance-azure
 
           # Wait a moment for outputs to be available
           sleep 5
 
           # Get outputs
-          SITE_NAME=$(terraform output -raw aws_site_name)
-          PRIVATE_IP=$(terraform output -raw private_app_ip)
+          SITE_NAME=$(terraform output -raw azure_site_name)
+          PRIVATE_IP=$(terraform output -raw backend_private_ip)
 
           echo "Public IP: $SITE_NAME"
           echo "Private IP: $PRIVATE_IP"
 
-          echo "aws_site_name=$SITE_NAME" >> $GITHUB_OUTPUT
-          echo "private_ip=$PRIVATE_IP" >> $GITHUB_OUTPUT
+          echo "azure_site_name=$SITE_NAME" >> $GITHUB_OUTPUT
+          echo "backend_private_ip=$PRIVATE_IP" >> $GITHUB_OUTPUT
 
-  f5xc-automation:
+  f5xc-backend:
     runs-on: ubuntu-latest
-    needs: ce-instance-deployment
+    needs: [aws-ce-deployment, azure-ce-deployment]
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Debug - Check IP values
+        run: |
+          echo "Received SITE_NAME: ${{ needs.aws-instance-deployment.outputs.azure_site_name }}"
+          echo "Received Private IP: ${{ needs.aws-instance-deployment.outputs.backend_private_ip }}"
+          echo "Received SITE_NAME_AWS: ${{ needs.aws-instance-deployment.outputs.aws_site_name }}"
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+          terraform_wrapper: false
+
+      - name: Deploy F5XC HTTP only Load Balancer
+        env:
+          VES_P12_CONTENT: ${{ secrets.P12_CERTIFICATE_BASE64 }}
+          VES_P12_PASSWORD: ${{ secrets.VES_P12_PASSWORD }}
+          TF_VAR_inside_network_IP: ${{ needs.ce-instance-deployment.outputs.backend_private_ip }}
+          TF_VAR_site_name: ${{ needs.ce-instance-deployment.outputs.azure_site_name }}
+          TF_VAR_site_adv_name: ${{ needs.aws-instance-deployment.outputs.aws_site_name }}"
+        run: |
+          cd customer-edge-lb/f5xc-ce-https
+          echo "Running F5XC terraform Automation"
+          echo "Using Public IP: $TF_VAR_public_ip"
+          terraform init
+          terraform apply -auto-approve
+
+  f5xc-frontend:
+    runs-on: ubuntu-latest
+    needs: [aws-ce-deployment, azure-ce-deployment, f5xc-backend]
 
     steps:
       - name: Checkout repo

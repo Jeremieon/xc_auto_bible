@@ -94,24 +94,22 @@ resource "volterra_http_loadbalancer" "https_auto_cert-lb" {
       default_security = true
     }
   }
+
+  advertise_on_public_default_vip = true
   # Or advertise on RE (internet)
   # advertise_on_public_default_vip = true
   # Advertise on CE public IP
-  advertise_custom {
-    advertise_where {
-      site {
-        network = var.site_adv_network
-        site {
-          namespace = "system"
-          name      = var.site_name
-        }
-      }
-    }
-  }
-  #   http {
-  #     dns_volterra_managed = false
-  #     port                 = 80
+  # advertise_custom {
+  #   advertise_where {
+  #     site {
+  #       network = var.site_adv_network
+  #       site {
+  #         namespace = "system"
+  #         name      = var.site_name
+  #       }
+  #     }
   #   }
+  # }
 
   default_route_pools {
     pool {

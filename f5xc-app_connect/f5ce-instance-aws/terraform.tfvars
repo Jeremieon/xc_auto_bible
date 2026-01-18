@@ -19,8 +19,3 @@ f5xc_sms_description = "F5XC SMSv2 AWS site created with Terraform"
 
 slo-private-ip = "10.0.2.10"
 sli-private-ip = "10.0.3.10"
-
-deploy_nlb            = true
-nlb_target_ports      = [80, 443]
-nlb_health_check_port = 80
-

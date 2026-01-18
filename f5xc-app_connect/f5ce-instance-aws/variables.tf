@@ -64,24 +64,6 @@ variable "aws-region" {
   default     = "us-east-1"
 }
 
-variable "deploy_nlb" {
-  type        = bool
-  description = "Deploy AWS Network Load Balancer"
-  default     = false
-}
-
-variable "nlb_target_ports" {
-  type        = list(number)
-  description = "Target ports for NLB to forward traffic to F5XC CE nodes"
-  default     = [80, 443]
-}
-
-variable "nlb_health_check_port" {
-  type        = number
-  description = "Port for NLB health check"
-  default     = 80
-}
-
 variable "f5xc_sms_description" {
   type    = string
   default = "F5XC AWS site created with Terraform"
