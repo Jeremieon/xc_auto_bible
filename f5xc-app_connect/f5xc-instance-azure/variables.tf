@@ -9,6 +9,10 @@ variable "resource_group_name" {
   default     = "my-resource-group"
 }
 
+variable "ssh_public_key" {
+  description = "SSH public key for EC2 access"
+  type        = string
+}
 variable "public_subnet_cidr" {
   description = "CIDR for public subnet"
   type        = string
@@ -63,12 +67,6 @@ variable "f5xc_sms_storage_account_type" {
 variable "f5xc_api_url" {
   type    = string
   default = "https://your-tenant.console.ves.volterra.io/api"
-}
-
-variable "f5xc_api_p12_file" {
-  type        = string
-  description = "Path to F5XC API credentials P12 file (download from F5XC console)"
-  default     = "/path/to/your/api-creds.p12"
 }
 
 variable "f5xc_sms_description" {

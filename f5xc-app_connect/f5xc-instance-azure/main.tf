@@ -240,7 +240,7 @@ resource "azurerm_linux_virtual_machine" "f5xc-ce-nodes" {
 
   admin_ssh_key {
     username   = var.ssh_username
-    public_key = file("~/.ssh/id_rsa.pub")
+    public_key = var.ssh_public_key
   }
 
   os_disk {

@@ -51,17 +51,15 @@ variable "f5xc_api_url" {
   type    = string
   default = "https://your-tenant.console.ves.volterra.io/api"
 }
-
-# variable "aws_ssh_key" {
-#   description = "AWS SSH key pair name for EC2 instance access"
-#   type        = string
-#   default     = "my-ssh-key"
-# }
-
 variable "aws-region" {
   description = "AWS region for F5XC CE deployment"
   type        = string
   default     = "us-east-1"
+}
+
+variable "ssh_public_key" {
+  description = "SSH public key for EC2 access"
+  type        = string
 }
 
 variable "f5xc_sms_description" {
