@@ -298,7 +298,7 @@ resource "azurerm_linux_virtual_machine" "inside_vm" {
 
   admin_ssh_key {
     username   = var.ssh_username
-    public_key = file("~/.ssh/id_rsa.pub")
+    public_key = var.ssh_public_key
   }
 
   custom_data = base64encode(<<-EOF
