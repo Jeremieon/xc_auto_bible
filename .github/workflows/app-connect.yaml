@@ -54,6 +54,7 @@ jobs:
 
   azure-ce-deployment:
     runs-on: ubuntu-latest
+    needs: aws-ce-deployment
     outputs:
       azure_site_name: ${{ steps.get-outputs.outputs.azure_site_name }}
       backend_private_ip: ${{ steps.get-outputs.outputs.backend_private_ip }}

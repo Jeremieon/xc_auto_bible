@@ -3,7 +3,7 @@ terraform {
     organization = "jeremieonk"
 
     workspaces {
-      name = "titas"
+      name = "xc_auto_bible"
     }
   }
 }
