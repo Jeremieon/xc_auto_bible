@@ -39,4 +39,5 @@ variable "port" {
 variable "site_adv_name" {
   description = "Site to advertise LB @"
   type        = string
+  default     = "jeremieon-aws-site"
 }
