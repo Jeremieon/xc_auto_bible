@@ -1,8 +1,3 @@
-variable "api_p12_file" {
-  description = "Path to XC API certificate"
-  type        = string
-  default     = "./api-creds.p12"
-}
 
 variable "xc_api_url" {
   description = "XC API URL"
@@ -20,11 +15,13 @@ variable "namespace" {
 variable "inside_network_IP" {
   description = "Inside network IP where the backend server is located for origin pool"
   type        = string
+  default     = "0.0.0.0"
 }
 
 variable "site_name" {
   description = "F5XC site name where the backend server is located"
   type        = string
+  default     = "jeremieon-site-xyz"
 }
 
 variable "site_adv_network" {
@@ -36,6 +33,7 @@ variable "site_adv_network" {
 variable "port" {
   description = "origin server port"
   type        = number
+  default     = 8000
 }
 
 variable "site_adv_name" {
