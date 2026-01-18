@@ -1,4 +1,4 @@
-name: F5XC(App Connect) DESTROY
+name: AWS&F5XC(CE-Only) DESTROY
 
 on:
   workflow_dispatch:
