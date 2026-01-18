@@ -119,7 +119,7 @@ jobs:
 
   cleanup-complete:
     runs-on: ubuntu-latest
-    needs: [destroy-f5xc-lb, destroy-aws]
+    needs: [destroy-frontend, destroy-backend, destroy-azure, destroy-aws]
     steps:
       - name: Destruction Summary
         run: |
