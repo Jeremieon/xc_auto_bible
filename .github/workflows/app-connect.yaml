@@ -4,6 +4,7 @@ on:
   workflow_dispatch:
 jobs:
   aws-ce-deployment:
+    if: false
     runs-on: ubuntu-latest
     outputs:
       aws_site_name: ${{ steps.get-outputs.outputs.aws_site_name }}
@@ -53,6 +54,7 @@ jobs:
           echo "private_ip=$PRIVATE_IP" >> $GITHUB_OUTPUT
 
   azure-ce-deployment:
+    if: false
     runs-on: ubuntu-latest
     needs: aws-ce-deployment
     outputs:
@@ -112,9 +114,9 @@ jobs:
 
       - name: Debug - Check IP values
         run: |
-          echo "Received SITE_NAME: ${{ needs.aws-instance-deployment.outputs.azure_site_name }}"
-          echo "Received Private IP: ${{ needs.aws-instance-deployment.outputs.backend_private_ip }}"
-          echo "Received SITE_NAME_AWS: ${{ needs.aws-instance-deployment.outputs.aws_site_name }}"
+          echo "Received SITE_NAME: ${{ needs.azure-ce-deployment.outputs.azure_site_name }}"
+          echo "Received Private IP: ${{ needs.azure-ce-deployment.outputs.backend_private_ip }}"
+          echo "Received SITE_NAME_AWS: ${{ needs.aws-ce-deployment.outputs.aws_site_name }}"
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
@@ -126,9 +128,9 @@ jobs:
         env:
           VES_P12_CONTENT: ${{ secrets.P12_CERTIFICATE_BASE64 }}
           VES_P12_PASSWORD: ${{ secrets.VES_P12_PASSWORD }}
-          TF_VAR_inside_network_IP: ${{ needs.ce-instance-deployment.outputs.backend_private_ip }}
-          TF_VAR_site_name: ${{ needs.ce-instance-deployment.outputs.azure_site_name }}
-          TF_VAR_site_adv_name: ${{ needs.aws-instance-deployment.outputs.aws_site_name }}"
+          TF_VAR_inside_network_IP: ${{ needs.azure-ce-deployment.outputs.backend_private_ip }}
+          TF_VAR_site_name: ${{ needs.azure-ce-deployment.outputs.azure_site_name }}
+          TF_VAR_site_adv_name: ${{ needs.aws-ce-deployment.outputs.aws_site_name }}"
         run: |
           cd customer-edge-lb/f5xc-ce-https
           echo "Running F5XC terraform Automation"
@@ -146,8 +148,8 @@ jobs:
 
       - name: Debug - Check IP values
         run: |
-          echo "Received SITE_NAME: ${{ needs.aws-instance-deployment.outputs.aws_site_name }}"
-          echo "Received Private IP: ${{ needs.aws-instance-deployment.outputs.private_app_ip }}"
+          echo "Received SITE_NAME: ${{ needs.aws-ce-deployment.outputs.aws_site_name }}"
+          echo "Received Private IP: ${{ needs.aws-ce-deployment.outputs.private_app_ip }}"
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
