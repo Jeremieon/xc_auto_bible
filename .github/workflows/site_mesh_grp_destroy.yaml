@@ -1,4 +1,4 @@
-name: F5XC(App Connect) DESTROY
+name: F5XC(Site Mesh) DESTROY
 
 on:
   workflow_dispatch:

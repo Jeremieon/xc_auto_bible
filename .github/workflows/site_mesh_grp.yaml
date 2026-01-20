@@ -1,4 +1,4 @@
-name: F5XC(App Connect)
+name: F5XC(Site Mesh)
 
 on:
   workflow_dispatch:
@@ -8,7 +8,6 @@ jobs:
     outputs:
       aws_site_name: ${{ steps.get-outputs.outputs.aws_site_name }}
       private_app_ip: ${{ steps.get-outputs.outputs.private_ip }}
-      
 
     steps:
       - name: Checkout repo
