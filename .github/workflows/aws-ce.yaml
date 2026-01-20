@@ -62,8 +62,8 @@ jobs:
 
       - name: Debug - Check IP values
         run: |
-          echo "Received SITE_NAME: ${{ needs.aws-instance-deployment.outputs.aws_site_name }}"
-          echo "Received Private IP: ${{ needs.aws-instance-deployment.outputs.private_app_ip }}"
+          echo "Received SITE_NAME: ${{ needs.ce-instance-deployment.outputs.aws_site_name }}"
+          echo "Received Private IP: ${{ needs.ce-instance-deployment.outputs.private_app_ip }}"
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
