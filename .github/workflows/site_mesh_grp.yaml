@@ -8,6 +8,7 @@ jobs:
     outputs:
       aws_site_name: ${{ steps.get-outputs.outputs.aws_site_name }}
       private_app_ip: ${{ steps.get-outputs.outputs.private_ip }}
+      
 
     steps:
       - name: Checkout repo
@@ -132,7 +133,7 @@ jobs:
           TF_VAR_site_name: ${{ needs.azure-ce-deployment.outputs.azure_site_name }}
           TF_VAR_site_adv_name: ${{ needs.aws-ce-deployment.outputs.aws_site_name }}"
         run: |
-          cd f5xc-app_connect/xc-multicloud/backend-lb
+          cd customer-edge-lb/f5xc-ce-https
           echo "Running F5XC terraform Automation"
           echo "Using Public IP: $TF_VAR_public_ip"
           terraform init
@@ -164,7 +165,7 @@ jobs:
           TF_VAR_inside_network_IP: ${{ needs.aws-ce-deployment.outputs.private_app_ip }}
           TF_VAR_site_name: ${{ needs.aws-ce-deployment.outputs.aws_site_name }}
         run: |
-          cd f5xc-app_connect/xc-multicloud/frontend-lb
+          cd customer-edge-lb/f5xc-ce-https
           echo "Running F5XC terraform Automation"
           echo "Using Public IP: $TF_VAR_public_ip"
           terraform init
