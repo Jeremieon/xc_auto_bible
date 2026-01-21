@@ -3,8 +3,7 @@ data "terraform_remote_state" "aws_infra" {
   backend = "remote"
 
   config = {
-    organization = "jeremieonk" # ← Same org name
-
+    organization = "jeremieonk" # 
     workspaces = {
       name = "titas"
     }
