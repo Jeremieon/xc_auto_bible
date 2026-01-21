@@ -30,7 +30,6 @@ jobs:
           terraform plan
 
       - name: Terraform Apply
-        if: false
         run: |
           cd f5xc-app_connect/f5ce-instance-aws
           terraform apply -auto-approve
@@ -47,7 +46,7 @@ jobs:
           SITE_NAME=$(terraform output -raw aws_site_name)
           PRIVATE_IP=$(terraform output -raw private_app_ip)
 
-          echo "Public IP: $SITE_NAME"
+          echo "Site Name: $SITE_NAME"
           echo "Private IP: $PRIVATE_IP"
 
           echo "aws_site_name=$SITE_NAME" >> $GITHUB_OUTPUT
@@ -97,7 +96,7 @@ jobs:
           SITE_NAME=$(terraform output -raw azure_site_name)
           PRIVATE_IP=$(terraform output -raw backend_private_ip)
 
-          echo "Public IP: $SITE_NAME"
+          echo "Site Name: $SITE_NAME"
           echo "Private IP: $PRIVATE_IP"
 
           echo "azure_site_name=$SITE_NAME" >> $GITHUB_OUTPUT
@@ -130,7 +129,7 @@ jobs:
           VES_P12_PASSWORD: ${{ secrets.VES_P12_PASSWORD }}
           TF_VAR_inside_network_IP: ${{ needs.azure-ce-deployment.outputs.backend_private_ip }}
           TF_VAR_site_name: ${{ needs.azure-ce-deployment.outputs.azure_site_name }}
-          TF_VAR_site_adv_name: ${{ needs.aws-ce-deployment.outputs.aws_site_name }}"
+          TF_VAR_site_adv_name: ${{ needs.aws-ce-deployment.outputs.aws_site_name }}
         run: |
           cd f5xc-app_connect/xc-multicloud/backend-lb
           echo "Running F5XC terraform Automation"

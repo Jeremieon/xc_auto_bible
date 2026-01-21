@@ -46,7 +46,7 @@ jobs:
           SITE_NAME=$(terraform output -raw aws_site_name)
           PRIVATE_IP=$(terraform output -raw private_app_ip)
 
-          echo "Public IP: $SITE_NAME"
+          echo "Site Name IP: $SITE_NAME"
           echo "Private IP: $PRIVATE_IP"
 
           echo "aws_site_name=$SITE_NAME" >> $GITHUB_OUTPUT
@@ -80,6 +80,5 @@ jobs:
         run: |
           cd customer-edge-lb/f5xc-ce-https
           echo "Running F5XC terraform Automation"
-          echo "Using Public IP: $TF_VAR_public_ip"
           terraform init
           terraform apply -auto-approve
