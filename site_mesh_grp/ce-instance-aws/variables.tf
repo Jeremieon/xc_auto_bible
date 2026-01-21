@@ -56,7 +56,7 @@ variable "f5xc_default_sw_version" {
   }
 }
 
-variable "aws-region" {
+variable "aws_region" {
   type        = string
   description = "This  is the region where big-ip was deployed"
   default     = "us-east-1"
