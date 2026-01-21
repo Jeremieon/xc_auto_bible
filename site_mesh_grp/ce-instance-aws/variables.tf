@@ -55,6 +55,12 @@ variable "f5xc_default_sw_version" {
     error_message = "f5xc_default_sw_version must be a boolean value."
   }
 }
+
+variable "aws-region" {
+  type        = string
+  description = "This  is the region where big-ip was deployed"
+  default     = "us-east-1"
+}
 variable "node_count" {
   type        = number
   description = "Number of F5XC CE nodes to deploy"

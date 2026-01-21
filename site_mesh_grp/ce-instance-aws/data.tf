@@ -10,7 +10,6 @@ data "terraform_remote_state" "aws_infra" {
   }
 }
 
-# Also read Azure infrastructure if you need it for tunnel config
 data "terraform_remote_state" "azure_infra" {
   backend = "remote"
 
