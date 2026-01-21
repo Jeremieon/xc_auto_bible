@@ -1,48 +1,106 @@
-variable "tenant_name" {
-  description = "REQUIRED: F5 Distributed Cloud tenant ID"
-  type        = string
-}
-
-variable "namespace" {
-  description = "REQUIRED: F5 Distributed Cloud namespace to deploy objects into"
-  type        = string
-  default     = "default"
-}
-
-variable "f5xc_vsite_key_label" {
-  type        = string
-  description = "F5XC virtual site key label value"
-  default     = "yes"
-}
-
-variable "create_f5xc_virtual_site" {
-  type        = bool
-  description = "Create F5XC Virtual Site"
-  default     = false
-}
-
-variable "f5xc_virtual_site_name" {
-  type        = string
-  description = "F5XC Virtual Site name"
-  default     = ""
-}
-
-variable "f5xc-ce-site-name" {
+#instance/variable.tf
+variable "f5xc_ce_site_name" {
   description = "F5XC CE site/cluster name (will be used as prefix for resources)"
   type        = string
   default     = "my-f5xc-site"
 }
 
-
-variable "f5xc_vsite_key" {
+variable "owner" {
+  description = "Owner tag for AWS resources"
   type        = string
-  description = "F5XC virtual site key for site selection"
-  default     = "my-vsite-key"
+  default     = "your-name"
 }
-variable "create_f5xc_vsite_resources" {
-  type        = bool
-  description = "Create the F5XC vsite key and label resources"
-  default     = true
+
+variable "node_count" {
+  type        = number
+  description = "Number of F5XC CE nodes to deploy"
+  default     = 1
+  validation {
+    condition     = var.node_count >= 1 && var.node_count <= 10
+    error_message = "Node count must be between 1 and 10."
+  }
+}
+
+variable "slo-private-ip" {
+  description = "Private IP for SLO interface"
+  type        = string
+}
+
+variable "sli-private-ip" {
+  description = "Private IP for SLI interface"
+  type        = string
+}
+variable "aws-f5xc-ami" {
+  description = "F5XC CE AMI ID (obtain from F5 Distributed Cloud console)"
+  type        = string
+  default     = "ami-xxxxxxxxxxxxxxxxx"
+}
+
+variable "aws-ec2-flavor" {
+  type        = string
+  description = "EC2 instance type (allowed: m5.2xlarge, m5.4xlarge)"
+  default     = "m5.2xlarge"
+
+  validation {
+    condition     = contains(["m5.2xlarge", "m5.4xlarge"], var.aws-ec2-flavor)
+    error_message = "Invalid EC2 instance type. Allowed values are: m5.2xlarge or m5.4xlarge."
+  }
+}
+
+variable "aws-region" {
+  description = "AWS region for F5XC CE deployment"
+  type        = string
+  default     = "us-east-1"
+}
+
+variable "ssh_public_key" {
+  description = "SSH public key for EC2 access"
+  type        = string
+}
+
+variable "f5xc_sms_description" {
+  type    = string
+  default = "F5XC AWS site created with Terraform"
+}
+
+# --- vpc/variable.tf ---
+variable "name-prefix" {
+  description = "Name of the instance"
+  type        = string
+}
+
+variable "aws_region" {
+  description = "region instance was deployed"
+  type        = string
+}
+
+variable "vpc_cidr" {
+  description = "The CIDR block for the VPC"
+  type        = string
+}
+
+variable "public_subnet_cidr" {
+  description = "The CIDR block for the Subnet"
+  type        = string
+  default     = "10.0.1.0/24"
+}
+
+variable "outside_subnet_cidr" {
+  description = "The CIDR block for the Subnet"
+  type        = string
+  default     = "10.0.2.0/24"
+}
+
+variable "inside_subnet_cidr" {
+  description = "The CIDR block for the Subnet"
+  type        = string
+  default     = "10.0.3.0/24"
+}
+
+variable "availability_zone" {
+  description = "The az for the VPC"
+  type        = string
+  default     = "us-east-1a"
 }
 
 variable "f5xc_default_sw_version" {
@@ -55,33 +113,25 @@ variable "f5xc_default_sw_version" {
     error_message = "f5xc_default_sw_version must be a boolean value."
   }
 }
+# --- instance/variable.tf ---
 
-variable "aws_region" {
-  type        = string
-  description = "This  is the region where big-ip was deployed"
-  default     = "us-east-1"
-}
-variable "node_count" {
+variable "instance_count" {
+  description = "Number of instances to launch"
   type        = number
-  description = "Number of F5XC CE nodes to deploy"
   default     = 1
-  validation {
-    condition     = var.node_count >= 1 && var.node_count <= 10
-    error_message = "Node count must be between 1 and 10."
-  }
 }
 
-variable "f5xc_sms_description" {
-  type    = string
-  default = "F5XC AWS site created with Terraform"
-}
-
-
-variable "azr_public_ip" {
-  description = "Ip of remote CE "
+variable "aws_ami" {
+  description = "value"
   type        = string
-  default     = "0.0.0.0"
+  default     = "ami-0c398cb65a93047f2"
 }
+
+variable "key_name" {
+  type    = string
+  default = null
+}
+
 
 variable "f5xc_software_version" {
   type        = string
@@ -89,14 +139,8 @@ variable "f5xc_software_version" {
   default     = null
 }
 
-variable "public_ip" {
-  description = "Public IP from AWS instance"
+variable "namespace" {
   type        = string
-  default     = "0.0.0.0"
-}
-
-variable "volterra_url" {
-  description = "Volterra API URL"
-  type        = string
-  default     = "https://f5-emea-ent.console.ves.volterra.io/api"
+  description = "Namespace for the load balancer"
+  default     = "system"
 }
