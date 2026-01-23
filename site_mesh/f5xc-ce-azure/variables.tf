@@ -100,12 +100,6 @@ variable "f5xc_api_url" {
   default = "https://your-tenant.console.ves.volterra.io/api"
 }
 
-variable "f5xc_api_p12_file" {
-  type        = string
-  description = "Path to F5XC API credentials P12 file (download from F5XC console)"
-  default     = "/path/to/your/api-creds.p12"
-}
-
 variable "f5xc_sms_description" {
   type    = string
   default = "F5XC Azure site created with Terraform"

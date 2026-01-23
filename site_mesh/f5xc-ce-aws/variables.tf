@@ -85,12 +85,6 @@ variable "f5xc_api_url" {
   default = "https://f5-emea-ent.console.ves.volterra.io/api"
 }
 
-variable "f5xc_api_p12_file" {
-  type        = string
-  description = "Path to F5XC API credentials P12 file (download from F5XC console)"
-  default     = "./api-creds.p12"
-}
-
 variable "f5xc_sms_description" {
   type    = string
   default = "F5XC AWS site created with Terraform"
