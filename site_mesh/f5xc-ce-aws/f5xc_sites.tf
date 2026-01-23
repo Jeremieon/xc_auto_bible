@@ -71,7 +71,7 @@ resource "volterra_site_mesh_group" "vsite_mesh" {
   depends_on = [volterra_virtual_site.vsite]
   virtual_site {
     name      = var.f5xc_virtual_site_name
-    namespace = shared
+    namespace = "shared"
   }
   full_mesh {
     data_plane_mesh = true

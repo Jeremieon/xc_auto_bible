@@ -34,7 +34,7 @@ resource "volterra_securemesh_site_v2" "site" {
   azure {
     not_managed {
       node_list {
-        public_ip = var.azr_public_ip
+        public_ip = "0.0.0.0"
         interface_list {
           network_option {
             site_local_network = true
