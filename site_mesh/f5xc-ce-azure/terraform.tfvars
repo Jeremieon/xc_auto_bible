@@ -18,8 +18,7 @@ f5xc_sms_storage_account_type = "Standard_LRS"
 node_count                    = 1
 
 # F5XC API Configuration
-f5xc_api_url      = "https://f5-emea-ent.console.ves.volterra.io/api"
-f5xc_api_p12_file = "./api-creds.p12"
+f5xc_api_url = "https://f5-emea-ent.console.ves.volterra.io/api"
 
 # Virtual Site Configuration (optional)
 create_f5xc_vsite_resources = false
