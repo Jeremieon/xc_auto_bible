@@ -39,7 +39,8 @@ resource "volterra_securemesh_site_v2" "site" {
         public_ip = "0.0.0.0"
         interface_list {
           network_option {
-            site_local_network = true
+            site_local_network        = true
+            site_local_inside_network = true
           }
           site_to_site_connectivity_interface_enabled = true
         }
