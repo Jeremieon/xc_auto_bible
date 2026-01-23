@@ -34,7 +34,6 @@ resource "volterra_securemesh_site_v2" "site" {
   azure {
     not_managed {
       node_list {
-        hostname  = Control
         type      = "Control"
         public_ip = azurerm_public_ip.ce_public_ip
         interface_list {

@@ -36,7 +36,6 @@ resource "volterra_securemesh_site_v2" "site" {
   aws {
     not_managed {
       node_list {
-        hostname  = Control
         type      = "Control"
         public_ip = aws_eip.public_ip.public_ip
         interface_list {
