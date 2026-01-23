@@ -64,7 +64,7 @@ jobs:
           VES_P12_CONTENT: ${{ secrets.P12_CERTIFICATE_BASE64 }}
           VES_P12_PASSWORD: ${{ secrets.VES_P12_PASSWORD }}
         run: |
-          cd site_mesh/f5xc-ce-azure
+          cd site_mesh/f5xc-ce-aws
           echo "Destroying F5XC AWS Site..."
           terraform init
           terraform destroy -auto-approve
