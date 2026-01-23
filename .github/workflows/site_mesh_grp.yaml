@@ -30,13 +30,13 @@ jobs:
           cd site_mesh/f5xc-ce-aws
           terraform plan
 
-      # - name: Deploy F5XC AWS Site
-      #   env:
-      #     VES_P12_CONTENT: ${{ secrets.P12_CERTIFICATE_BASE64 }}
-      #     VES_P12_PASSWORD: ${{ secrets.VES_P12_PASSWORD }}
-      #   run: |
-      #     cd site_mesh/f5xc-ce-aws
-      #     terraform apply -auto-approve
+      - name: Deploy F5XC AWS Site
+        env:
+          VES_P12_CONTENT: ${{ secrets.P12_CERTIFICATE_BASE64 }}
+          VES_P12_PASSWORD: ${{ secrets.VES_P12_PASSWORD }}
+        run: |
+          cd site_mesh/f5xc-ce-aws
+          terraform apply -auto-approve
 
   azure-ce-deployment:
     runs-on: ubuntu-latest
