@@ -49,7 +49,7 @@ resource "volterra_securemesh_site_v2" "site" {
           }
 
           static_ip {
-            ip_address = aws_network_interface.inside[count.index].private_ip
+            ip_address = var.inside_subnet_cidr
           }
           network_option {
             site_local_inside_network = true
