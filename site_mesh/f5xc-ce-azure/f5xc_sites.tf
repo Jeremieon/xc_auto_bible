@@ -43,7 +43,7 @@ resource "volterra_securemesh_site_v2" "site" {
             device = "eth0"
           }
           static_ip {
-            ip_address = "${azurerm_network_interface.outside.private_ip}/24"
+            ip_address = "${azurerm_network_interface.outside.private_ip_address}/24"
           }
           name = "eth0"
           network_option {
@@ -58,7 +58,7 @@ resource "volterra_securemesh_site_v2" "site" {
             device = "eth1"
           }
           static_ip {
-            ip_address = "${azurerm_network_interface.inside.private_ip}/24"
+            ip_address = "${azurerm_network_interface.inside.private_ip_address}/24"
           }
           name = "eth1"
           network_option {
