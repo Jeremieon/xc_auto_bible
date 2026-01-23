@@ -47,7 +47,6 @@ resource "volterra_securemesh_site_v2" "site" {
           }
           network_option {
             site_local_network = true
-            site_local_inside_network = true
           }
           site_to_site_connectivity_interface_enabled = true
         }
