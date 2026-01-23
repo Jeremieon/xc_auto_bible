@@ -18,7 +18,7 @@ resource "volterra_securemesh_site_v2" "site" {
   name                    = format("%s-%s", var.f5xc-ce-site-name, random_id.suffix.hex)
   namespace               = "system"
   description             = var.f5xc_sms_description
-  block_all_services      = true
+  block_all_services      = false
   logs_streaming_disabled = true
   enable_ha               = false
   labels = merge({
@@ -32,50 +32,50 @@ resource "volterra_securemesh_site_v2" "site" {
   }
 
   azure {
-    not_managed {
-      node_list {
-        hostname  = "master-0"
-        type      = "Control"
-        public_ip = azurerm_public_ip.ce_public_ip.ip_address
-        #OUTSIDE INTERFACE
-        interface_list {
-          ethernet_interface {
-            device = "ens5"
-          }
-          dhcp_client = true
-          # static_ip {
-          #   ip_address = "${azurerm_network_interface.outside.private_ip_address}/24"
-          # }
-          name = "ens6"
-          network_option {
-            site_local_network = true
-          }
+    not_managed {}
+    #   node_list {
+    #     hostname  = "master-0"
+    #     type      = "Control"
+    #     public_ip = azurerm_public_ip.ce_public_ip.ip_address
+    #     #OUTSIDE INTERFACE
+    #     interface_list {
+    #       ethernet_interface {
+    #         device = "ens5"
+    #       }
+    #       dhcp_client = true
+    #       # static_ip {
+    #       #   ip_address = "${azurerm_network_interface.outside.private_ip_address}/24"
+    #       # }
+    #       name = "ens6"
+    #       network_option {
+    #         site_local_network = true
+    #       }
 
-          site_to_site_connectivity_interface_enabled = true
-        }
-        #INSIDE INTERFACE
-        interface_list {
-          ethernet_interface {
-            device = "eth1"
-          }
-          dhcp_client = true
-          # static_ip {
-          #   ip_address = "${azurerm_network_interface.inside.private_ip_address}/24"
-          # }
-          name = "eth1"
-          network_option {
-            site_local_inside_network = true
-          }
+    #       site_to_site_connectivity_interface_enabled = true
+    #     }
+    #     #INSIDE INTERFACE
+    #     interface_list {
+    #       ethernet_interface {
+    #         device = "eth1"
+    #       }
+    #       dhcp_client = true
+    #       # static_ip {
+    #       #   ip_address = "${azurerm_network_interface.inside.private_ip_address}/24"
+    #       # }
+    #       name = "eth1"
+    #       network_option {
+    #         site_local_inside_network = true
+    #       }
 
-          site_to_site_connectivity_interface_enabled = false
-        }
-      }
+    #       site_to_site_connectivity_interface_enabled = false
+    #     }
+    #   }
 
-    }
+    # }
 
-  }
-  site_mesh_group_on_slo {
-    sm_connection_public_ip = true
+    #   }
+    #   site_mesh_group_on_slo {
+    #     sm_connection_public_ip = true
   }
 }
 
