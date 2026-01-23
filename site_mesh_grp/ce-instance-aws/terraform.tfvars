@@ -8,12 +8,6 @@ name-prefix             = "jeremieon"
 vpc_cidr                = "10.0.0.0/16"
 owner                   = "jeremy"
 f5xc_default_sw_version = true
-# F5XC Site Configuration
-f5xc_ce_site_name = "jerry-aws-site"
-node_count        = 1
-aws-ec2-flavor    = "m5.2xlarge"
-# F5XC API Configuration
-f5xc_sms_description = "F5XC SMSv2 AWS site created with Terraform"
 
 slo-private-ip = "10.0.2.10"
 sli-private-ip = "10.0.3.10"

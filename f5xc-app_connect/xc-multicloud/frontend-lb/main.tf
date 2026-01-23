@@ -32,13 +32,21 @@ resource "volterra_healthcheck" "http-health-check" {
 #=====================
 
 resource "volterra_origin_pool" "http-origin-pool" {
-  name      = "${var.namespace}-tf-pool"
-  namespace = var.namespace
-
+  name                   = "${var.namespace}-tf-pool"
+  namespace              = var.namespace
+  loadbalancer_algorithm = "LB_OVERRIDE"
+  endpoint_selection     = "LOCALPREFERED"
+  port                   = var.port
+  same_as_endpoint_port  = true
+  no_tls                 = true
+  healthcheck {
+    namespace = var.namespace
+    name      = volterra_healthcheck.http-health-check.name
+  }
   origin_servers {
     private_ip {
-      ip             = var.inside_network_IP
       inside_network = true
+      ip             = var.inside_network_IP
       site_locator {
         site {
           name      = var.site_name
@@ -47,17 +55,11 @@ resource "volterra_origin_pool" "http-origin-pool" {
       }
 
     }
-  }
-  port                  = var.port
-  same_as_endpoint_port = true
-  no_tls                = true
-  healthcheck {
-    namespace = var.namespace
-    name      = volterra_healthcheck.http-health-check.name
+
+
+
 
   }
-  loadbalancer_algorithm = "LB_OVERRIDE"
-  endpoint_selection     = "LOCALPREFERED"
 }
 
 #=======================
@@ -121,6 +123,10 @@ resource "volterra_http_loadbalancer" "https_auto_cert-lb" {
   no_service_policies              = true
   source_ip_stickiness             = true
 }
+
+
+
+
 
 #===========================
 #  CREATE DNS ZONE & RECORDS

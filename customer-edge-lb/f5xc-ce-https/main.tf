@@ -46,22 +46,18 @@ resource "volterra_origin_pool" "http-origin-pool" {
           namespace = "system"
         }
       }
-
     }
   }
-
   port                  = var.port
   same_as_endpoint_port = true
   no_tls                = true
   healthcheck {
     namespace = var.namespace
     name      = volterra_healthcheck.http-health-check.name
-
   }
   loadbalancer_algorithm = "LB_OVERRIDE"
   endpoint_selection     = "LOCALPREFERED"
 }
-
 
 #=======================
 # Create Load Balancer #

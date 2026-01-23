@@ -53,6 +53,11 @@ variable "aws-region" {
   default     = "us-east-1"
 }
 
+variable "f5xc_ce_site-name" {
+  description = "aws-site name"
+  type        = string
+}
+
 variable "ssh_public_key" {
   description = "SSH public key for EC2 access"
   type        = string

@@ -114,41 +114,6 @@ resource "volterra_http_loadbalancer" "http-internal-lb" {
   source_ip_stickiness             = true
 }
 
-#===========================
-#  CREATE DNS ZONE & RECORDS
-#===========================
-
-# resource "volterra_dns_zone" "main_zone" {
-#   name      = "sample.io"
-#   namespace = "system"
-#   primary {
-#     default_soa_parameters = true
-#     dnssec_mode {
-#       disable = true
-#     }
-#     allow_http_lb_managed_records = false
-#     default_rr_set_group {
-#       ttl = 86400
-#       ns_record {
-#         values = ["ns1.f5clouddns.com", "ns2.f5clouddns.com"]
-#       }
-#     }
-#   }
-# }
-
-# resource "volterra_dns_zone_record" "mz_record" {
-#   dns_zone_name = volterra_dns_zone.main_zone.name
-#   group_name    = "default_rr_set_group"
-#   rrset {
-#     description = "description"
-#     ttl         = "3600"
-#     a_record {
-#       name   = "j-agboola"
-#       values = [var.frontend_public_ip]
-#     }
-#   }
-# }
-
 
 
 

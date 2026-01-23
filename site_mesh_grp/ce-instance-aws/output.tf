@@ -1,35 +1,39 @@
-# AWS Public IP
-resource "aws_eip" "aws_ce" {
-  domain = "vpc"
-  tags = {
-    Name = "aws-ce-public-ip"
-  }
+output "vpc_id" {
+  value = aws_vpc.main_vpc.id
 }
 
-# AWS VPC and subnets (simplified)
-resource "aws_vpc" "aws_ce_vpc" {
-  cidr_block = "10.1.0.0/16"
-  tags = {
-    Name = "aws-ce-vpc"
-  }
+output "outside_subnet_id" {
+  value = aws_subnet.outside.id
 }
 
-resource "aws_subnet" "aws_outside" {
-  vpc_id     = aws_vpc.aws_ce_vpc.id
-  cidr_block = "10.1.1.0/24"
-  tags = {
-    Name = "aws-outside-subnet"
-  }
+output "inside_subnet_id" {
+  value = aws_subnet.inside.id
 }
 
-resource "aws_subnet" "aws_inside" {
-  vpc_id     = aws_vpc.aws_ce_vpc.id
-  cidr_block = "10.1.2.0/24"
-  tags = {
-    Name = "aws-inside-subnet"
-  }
+output "aws_region" {
+  value = var.aws_region
 }
 
-resource "aws_internet_gateway" "aws_igw" {
-  vpc_id = aws_vpc.aws_ce_vpc.id
+output "availability_zone" {
+  value = var.availability_zone
+}
+
+output "outside_sg_id" {
+  value = aws_security_group.EC2-CE-sg-SLO.id
+}
+
+output "inside_sg_id" {
+  value = aws_security_group.EC2-CE-sg-SLI.id
+}
+
+output "public_ip" {
+  value = aws_eip.public_ip.public_ip
+}
+
+output "random_suffix" {
+  value = random_id.suffix.hex
+}
+
+output "f5xc_ce_site_name" {
+  value = var.f5xc_ce_site-name
 }
