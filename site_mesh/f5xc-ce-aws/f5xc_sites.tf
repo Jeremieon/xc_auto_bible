@@ -42,13 +42,13 @@ resource "volterra_securemesh_site_v2" "site" {
         #OUTSIDE INTERFACE
         interface_list {
           ethernet_interface {
-            device = "eth0"
+            device = "ens5"
           }
           dhcp_client = true
           # static_ip {
           #   ip_address = var.outside_subnet_cidr
           # }
-          name = "eth0"
+          name = "ens6"
           network_option {
             site_local_network = true
           }
