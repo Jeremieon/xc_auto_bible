@@ -42,9 +42,10 @@ resource "volterra_securemesh_site_v2" "site" {
           ethernet_interface {
             device = "eth0"
           }
-          static_ip {
-            ip_address = "${azurerm_network_interface.outside.private_ip_address}/24"
-          }
+          dhcp_client = true
+          # static_ip {
+          #   ip_address = "${azurerm_network_interface.outside.private_ip_address}/24"
+          # }
           name = "eth0"
           network_option {
             site_local_network = true
@@ -57,9 +58,10 @@ resource "volterra_securemesh_site_v2" "site" {
           ethernet_interface {
             device = "eth1"
           }
-          static_ip {
-            ip_address = "${azurerm_network_interface.inside.private_ip_address}/24"
-          }
+          dhcp_client = true
+          # static_ip {
+          #   ip_address = "${azurerm_network_interface.inside.private_ip_address}/24"
+          # }
           name = "eth1"
           network_option {
             site_local_inside_network = true

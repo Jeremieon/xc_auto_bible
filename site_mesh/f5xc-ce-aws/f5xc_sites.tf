@@ -44,9 +44,10 @@ resource "volterra_securemesh_site_v2" "site" {
           ethernet_interface {
             device = "eth0"
           }
-          static_ip {
-            ip_address = var.outside_subnet_cidr
-          }
+          dhcp_client = true
+          # static_ip {
+          #   ip_address = var.outside_subnet_cidr
+          # }
           name = "eth0"
           network_option {
             site_local_network = true
@@ -59,9 +60,10 @@ resource "volterra_securemesh_site_v2" "site" {
           ethernet_interface {
             device = "eth1"
           }
-          static_ip {
-            ip_address = var.inside_subnet_cidr
-          }
+          dhcp_client = true
+          # static_ip {
+          #   ip_address = var.inside_subnet_cidr
+          # }
           name = "eth1"
           network_option {
             site_local_inside_network = true
