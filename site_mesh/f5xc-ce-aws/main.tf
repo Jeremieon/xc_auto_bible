@@ -291,8 +291,8 @@ resource "aws_eip" "public_ip" {
 # }
 
 resource "aws_eip_association" "eip_attach" {
-  count                = length(aws_network_interface.outside) # or whatever count you're using
-  allocation_id        = aws_eip.public_ip.id                  # adjust based on your EIP resource
+  count                = length(aws_network_interface.outside)
+  allocation_id        = aws_eip.public_ip.id
   network_interface_id = aws_network_interface.outside[count.index].id
 }
 
