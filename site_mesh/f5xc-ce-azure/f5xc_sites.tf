@@ -35,7 +35,7 @@ resource "volterra_securemesh_site_v2" "site" {
     not_managed {
       node_list {
         type      = "Control"
-        public_ip = azurerm_public_ip.ce_public_ip
+        public_ip = azurerm_public_ip.ce_public_ip.ip_address
         #OUTSIDE INTERFACE
         interface_list {
           ethernet_interface {
