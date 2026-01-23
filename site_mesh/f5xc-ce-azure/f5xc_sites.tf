@@ -43,7 +43,7 @@ resource "volterra_securemesh_site_v2" "site" {
             device = "eth0"
           }
           static_ip {
-            ip_address = var.outside_subnet_cidr
+            ip_address = "${aws_network_interface.outside[count.index].private_ip}/24"
           }
           name = "eth0"
           network_option {
@@ -58,7 +58,7 @@ resource "volterra_securemesh_site_v2" "site" {
             device = "eth1"
           }
           static_ip {
-            ip_address = var.inside_subnet_cidr
+            ip_address = "${aws_network_interface.inside[count.index].private_ip}/24"
           }
           name = "eth1"
           network_option {
