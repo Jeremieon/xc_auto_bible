@@ -139,29 +139,6 @@ variable "node_count" {
   }
 }
 
-variable "azr_public_ip" {
-  description = "Azure CE Public IP"
-  type        = string
-}
-
-variable "deploy_lb" {
-  type        = bool
-  description = "Deploy Azure Load Balancer"
-  default     = false
-}
-
-variable "lb_target_ports" {
-  type        = list(number)
-  description = "Target ports for Load Balancer to forward traffic to F5XC CE nodes"
-  default     = [80, 443]
-}
-
-variable "lb_health_check_port" {
-  type        = number
-  description = "Port for Load Balancer health check"
-  default     = 80
-}
-
 variable "create_f5xc_virtual_site" {
   type        = bool
   description = "Create F5XC Virtual Site"
@@ -171,18 +148,6 @@ variable "create_f5xc_virtual_site" {
 variable "f5xc_virtual_site_name" {
   type        = string
   description = "F5XC Virtual Site name"
-  default     = ""
-}
-
-variable "create_f5xc_loadbalancer" {
-  type        = bool
-  description = "Create F5XC HTTP Load Balancer"
-  default     = false
-}
-
-variable "lb_name" {
-  type        = string
-  description = "Load balancer name"
   default     = ""
 }
 
@@ -214,34 +179,4 @@ variable "virtual_site_namespace" {
   type        = string
   description = "Virtual site namespace"
   default     = "shared"
-}
-
-variable "response_code" {
-  type        = number
-  description = "Direct response code"
-  default     = 200
-}
-
-variable "response_body" {
-  type        = string
-  description = "Direct response body"
-  default     = "HC OK"
-}
-
-variable "enable_waf" {
-  type        = bool
-  description = "Enable WAF protection"
-  default     = false
-}
-
-variable "enable_rate_limit" {
-  type        = bool
-  description = "Enable rate limiting"
-  default     = false
-}
-
-variable "enable_bot_defense" {
-  type        = bool
-  description = "Enable bot defense"
-  default     = false
 }

@@ -124,11 +124,6 @@ variable "node_count" {
   }
 }
 
-variable "aws_public_ip" {
-  description = "Azure CE Public IP"
-  type        = string
-}
-
 variable "create_f5xc_virtual_site" {
   type        = bool
   description = "Create F5XC Virtual Site"
@@ -182,37 +177,6 @@ variable "virtual_site_namespace" {
   description = "Virtual site namespace"
   default     = "shared"
 }
-
-variable "response_code" {
-  type        = number
-  description = "Direct response code"
-  default     = 200
-}
-
-variable "response_body" {
-  type        = string
-  description = "Direct response body"
-  default     = "HC OK"
-}
-
-variable "enable_waf" {
-  type        = bool
-  description = "Enable WAF protection"
-  default     = false
-}
-
-variable "enable_rate_limit" {
-  type        = bool
-  description = "Enable rate limiting"
-  default     = false
-}
-
-variable "enable_bot_defense" {
-  type        = bool
-  description = "Enable bot defense"
-  default     = false
-}
-
 variable "f5xc_software_version" {
   type        = string
   description = "F5XC software version for the site (only specify if default_sw_version is false)"
