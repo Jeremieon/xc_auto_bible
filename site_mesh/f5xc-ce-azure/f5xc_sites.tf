@@ -34,10 +34,24 @@ resource "volterra_securemesh_site_v2" "site" {
   azure {
     not_managed {
       node_list {
-        public_ip = "0.0.0.0"
+        public_ip = azurerm_public_ip.ce_public_ip
         interface_list {
+          bond_interface {
+            devices = ["eth1"]
+
+            lacp {
+              rate = "30"
+            }
+
+            link_polling_interval = "1000"
+            link_up_delay         = "200"
+            name                  = "bond1"
+          }
+
+          static_ip {
+            ip_address = aws_network_interface.inside[count.index].private_ip
+          }
           network_option {
-            site_local_network        = true
             site_local_inside_network = true
           }
           site_to_site_connectivity_interface_enabled = true
