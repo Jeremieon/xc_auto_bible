@@ -1,4 +1,4 @@
-name: F5XC Destroy (Site Mesh)
+name: F5XC (Site Mesh) - Destroy
 
 on:
   workflow_dispatch:
@@ -39,7 +39,7 @@ jobs:
           VES_P12_CONTENT: ${{ secrets.P12_CERTIFICATE_BASE64 }}
           VES_P12_PASSWORD: ${{ secrets.VES_P12_PASSWORD }}
         run: |
-          cd site_mesh_grp/f5xc-azure-site
+          cd site_mesh/f5xc-ce-azure
           echo "Destroying F5XC Azure Site..."
           terraform init
           terraform destroy -auto-approve
@@ -64,7 +64,7 @@ jobs:
           VES_P12_CONTENT: ${{ secrets.P12_CERTIFICATE_BASE64 }}
           VES_P12_PASSWORD: ${{ secrets.VES_P12_PASSWORD }}
         run: |
-          cd site_mesh_grp/f5xc-aws-site
+          cd site_mesh/f5xc-ce-azure
           echo "Destroying F5XC AWS Site..."
           terraform init
           terraform destroy -auto-approve
