@@ -38,7 +38,7 @@ resource "volterra_securemesh_site_v2" "site" {
         public_ip = azurerm_public_ip.ce_public_ip
         interface_list {
           ethernet_interface {
-            device = ["eth1"]
+            device = "eth1"
           }
           static_ip {
             ip_address = var.inside_subnet_cidr
