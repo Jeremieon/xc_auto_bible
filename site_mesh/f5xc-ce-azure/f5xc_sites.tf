@@ -36,6 +36,22 @@ resource "volterra_securemesh_site_v2" "site" {
       node_list {
         type      = "Control"
         public_ip = azurerm_public_ip.ce_public_ip
+        #OUTSIDE INTERFACE
+        interface_list {
+          ethernet_interface {
+            device = "eth0"
+          }
+          static_ip {
+            ip_address = var.outside_subnet_cidr
+          }
+          name = "eth0"
+          network_option {
+            site_local_network = true
+          }
+
+          site_to_site_connectivity_interface_enabled = true
+        }
+        #INSIDE INTERFACE
         interface_list {
           ethernet_interface {
             device = "eth1"
@@ -43,12 +59,13 @@ resource "volterra_securemesh_site_v2" "site" {
           static_ip {
             ip_address = var.inside_subnet_cidr
           }
+          name = "eth1"
           network_option {
-            site_local_network        = true
+            site_local_inside_network = true
           }
-          site_to_site_connectivity_interface_enabled = true
-        }
 
+          site_to_site_connectivity_interface_enabled = false
+        }
       }
 
     }
