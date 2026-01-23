@@ -34,7 +34,12 @@ resource "volterra_securemesh_site_v2" "site" {
   }
 
   aws {
-    not_managed {}
+    not_managed {
+      node_list {
+        type      = "Control"
+        public_ip = aws_eip.public_ip.public_ip
+      }
+    }
   }
   site_mesh_group_on_slo {
     sm_connection_public_ip = true

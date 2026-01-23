@@ -14,8 +14,9 @@ resource "volterra_known_label" "vsite_label" {
 }
 
 resource "volterra_securemesh_site_v2" "site" {
+  count                   = var.node_count
   depends_on              = [volterra_known_label_key.vsite_key, volterra_known_label.vsite_label]
-  name                    = format("%s-%s", var.f5xc-ce-site-name, random_id.suffix.hex)
+  name                    = format("%s-%s-%2d", var.f5xc-ce-site-name, random_id.suffix.hex, count.index + 1)
   namespace               = "system"
   description             = var.f5xc_sms_description
   block_all_services      = false
@@ -32,50 +33,25 @@ resource "volterra_securemesh_site_v2" "site" {
   }
 
   azure {
-    not_managed {}
-    #   node_list {
-    #     hostname  = "master-0"
-    #     type      = "Control"
-    #     public_ip = azurerm_public_ip.ce_public_ip.ip_address
-    #     #OUTSIDE INTERFACE
-    #     interface_list {
-    #       ethernet_interface {
-    #         device = "ens5"
-    #       }
-    #       dhcp_client = true
-    #       # static_ip {
-    #       #   ip_address = "${azurerm_network_interface.outside.private_ip_address}/24"
-    #       # }
-    #       name = "ens6"
-    #       network_option {
-    #         site_local_network = true
-    #       }
+    not_managed {
+      node_list {
+        type      = "Control"
+        public_ip = azurerm_public_ip.ce_public_ip.ip_address
+      }
+    }
+  }
+  site_mesh_group_on_slo {
+    sm_connection_public_ip = true
+  }
 
-    #       site_to_site_connectivity_interface_enabled = true
-    #     }
-    #     #INSIDE INTERFACE
-    #     interface_list {
-    #       ethernet_interface {
-    #         device = "eth1"
-    #       }
-    #       dhcp_client = true
-    #       # static_ip {
-    #       #   ip_address = "${azurerm_network_interface.inside.private_ip_address}/24"
-    #       # }
-    #       name = "eth1"
-    #       network_option {
-    #         site_local_inside_network = true
-    #       }
-
-    #       site_to_site_connectivity_interface_enabled = false
-    #     }
-    #   }
-
-    # }
-
-    #   }
-    #   site_mesh_group_on_slo {
-    #     sm_connection_public_ip = true
+  software_settings {
+    os {
+      default_os_version = true
+    }
+    sw {
+      default_sw_version        = var.f5xc_default_sw_version ? true : null
+      volterra_software_version = var.f5xc_default_sw_version ? null : var.f5xc_software_version
+    }
   }
 }
 

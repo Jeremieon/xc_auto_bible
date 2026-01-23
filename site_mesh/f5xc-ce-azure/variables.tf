@@ -14,6 +14,11 @@ variable "outside_subnet_cidr" {
   default     = "172.16.2.0/24"
 }
 
+variable "f5xc_software_version" {
+  type        = string
+  description = "F5XC software version for the site (only specify if default_sw_version is false)"
+  default     = null
+}
 variable "inside_subnet_cidr" {
   description = "CIDR for inside subnet"
   type        = string

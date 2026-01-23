@@ -14,7 +14,9 @@ resource "volterra_securemesh_site_v2" "site" {
   }
 
   azure {
-    not_managed {}
+    not_managed {
+      
+    }
   }
 
   software_settings {
