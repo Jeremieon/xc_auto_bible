@@ -14,9 +14,8 @@ resource "volterra_known_label" "vsite_label" {
 }
 
 resource "volterra_securemesh_site_v2" "site" {
-  count                   = var.node_count
   depends_on              = [volterra_known_label_key.vsite_key, volterra_known_label.vsite_label]
-  name                    = format("%s-%s-%2d", var.f5xc-ce-site-name, random_id.suffix.hex, count.index + 1)
+  name                    = format("%s-%s-%2d", var.f5xc-ce-site-name, random_id.suffix.hex)
   namespace               = "system"
   description             = var.f5xc_sms_description
   block_all_services      = false
