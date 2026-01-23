@@ -19,7 +19,23 @@ resource "volterra_securemesh_site_v2" "site" {
   }
 
   aws {
-    not_managed {}
+    not_managed {
+      node_list {
+        public_ip = "0.0.0.0"
+        interface_list {
+          network_option {
+            site_local_network = true
+          }
+          site_to_site_connectivity_interface_enabled = true
+        }
+
+      }
+
+    }
+
+  }
+  site_mesh_group_on_slo {
+    sm_connection_public_ip = true
   }
 
   software_settings {
