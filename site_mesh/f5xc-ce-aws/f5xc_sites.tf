@@ -39,6 +39,9 @@ resource "volterra_securemesh_site_v2" "site" {
         type      = "Control"
         public_ip = aws_eip.public_ip.public_ip
         interface_list {
+          ethernet_interface{
+            device = ["eth1"]
+          }
           static_ip {
             ip_address = var.inside_subnet_cidr
           }
