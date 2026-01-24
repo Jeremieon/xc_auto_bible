@@ -33,11 +33,6 @@ resource "volterra_securemesh_site_v2" "site" {
 
   azure {
     not_managed {
-      node_list {
-        hostname  = "master-0"
-        type      = "Control"
-        public_ip = azurerm_public_ip.ce_public_ip.ip_address
-      }
     }
   }
   site_mesh_group_on_slo {
