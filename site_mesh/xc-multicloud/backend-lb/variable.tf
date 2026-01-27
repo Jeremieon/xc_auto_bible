@@ -27,7 +27,7 @@ variable "site_name" {
 variable "site_adv_network" {
   description = "Network type to be used on site"
   type        = string
-  default     = "SITE_NETWORK_INSIDE"
+  default     = "SITE_NETWORK_INSIDE_AND_OUTSIDE"
 }
 
 variable "port" {

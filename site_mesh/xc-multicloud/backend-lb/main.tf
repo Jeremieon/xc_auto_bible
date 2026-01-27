@@ -32,8 +32,13 @@ resource "volterra_healthcheck" "http-internal-hc" {
 #=====================
 
 resource "volterra_origin_pool" "http-backend-pool" {
-  name      = "${var.namespace}-internal-pool"
-  namespace = var.namespace
+  name                   = "${var.namespace}-internal-pool"
+  namespace              = var.namespace
+  loadbalancer_algorithm = "LB_OVERRIDE"
+  endpoint_selection     = "LOCALPREFERED"
+  port                   = var.port
+  same_as_endpoint_port  = true
+  no_tls                 = true
 
   origin_servers {
     private_ip {
@@ -48,15 +53,12 @@ resource "volterra_origin_pool" "http-backend-pool" {
 
     }
   }
-  port                  = var.port
-  same_as_endpoint_port = true
-  no_tls                = true
+
   healthcheck {
     namespace = var.namespace
     name      = volterra_healthcheck.http-internal-hc.name
   }
-  loadbalancer_algorithm = "LB_OVERRIDE"
-  endpoint_selection     = "LOCALPREFERED"
+
 }
 
 #=======================
