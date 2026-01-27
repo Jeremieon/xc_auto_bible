@@ -81,7 +81,17 @@ resource "volterra_http_loadbalancer" "https_auto_cert-lb" {
     }
   }
 
-  advertise_on_public_default_vip = true
+  advertise_custom {
+    advertise_where {
+      site {
+        network = var.site_adv_network
+        site {
+          namespace = "system"
+          name      = var.site_name
+        }
+      }
+    }
+  }
  
 
   default_route_pools {
