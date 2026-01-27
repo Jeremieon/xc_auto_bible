@@ -1,4 +1,4 @@
-name: AWS&F5XC(CE-Only)
+name: AWS-F5XC(CE-Only)
 
 on:
   workflow_dispatch:

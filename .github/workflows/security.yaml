@@ -1,14 +1,14 @@
-name: F5XC Site Mesh
+name: Security
 
 on:
   workflow_dispatch:
-
 jobs:
   aws-ce-deployment:
     runs-on: ubuntu-latest
     outputs:
       aws_site_name: ${{ steps.get-outputs.outputs.aws_site_name }}
       private_app_ip: ${{ steps.get-outputs.outputs.private_ip }}
+
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -22,29 +22,22 @@ jobs:
 
       - name: Terraform Init
         run: |
-          cd site_mesh/f5xc-ce-aws
+          cd f5xc-app_connect/f5ce-instance-aws
           terraform init
-
       - name: Terraform Plan
-        env:
-          VES_P12_CONTENT: ${{ secrets.P12_CERTIFICATE_BASE64 }}
-          VES_P12_PASSWORD: ${{ secrets.VES_P12_PASSWORD }}
         run: |
-          cd site_mesh/f5xc-ce-aws
+          cd f5xc-app_connect/f5ce-instance-aws
           terraform plan
 
-      - name: Deploy F5XC AWS Site
-        env:
-          VES_P12_CONTENT: ${{ secrets.P12_CERTIFICATE_BASE64 }}
-          VES_P12_PASSWORD: ${{ secrets.VES_P12_PASSWORD }}
+      - name: Terraform Apply
         run: |
-          cd site_mesh/f5xc-ce-aws
+          cd f5xc-app_connect/f5ce-instance-aws
           terraform apply -auto-approve
 
-      - name: Get AWS Outputs from Terraform Cloud
+      - name: Get Outputs from Terraform Cloud
         id: get-outputs
         run: |
-          cd site_mesh/f5xc-ce-aws
+          cd f5xc-app_connect/f5ce-instance-aws
 
           # Wait a moment for outputs to be available
           sleep 5
@@ -53,7 +46,7 @@ jobs:
           SITE_NAME=$(terraform output -raw aws_site_name)
           PRIVATE_IP=$(terraform output -raw private_app_ip)
 
-          echo "Site Name IP: $SITE_NAME"
+          echo "Site Name: $SITE_NAME"
           echo "Private IP: $PRIVATE_IP"
 
           echo "aws_site_name=$SITE_NAME" >> $GITHUB_OUTPUT
@@ -65,6 +58,7 @@ jobs:
     outputs:
       azure_site_name: ${{ steps.get-outputs.outputs.azure_site_name }}
       backend_private_ip: ${{ steps.get-outputs.outputs.backend_private_ip }}
+
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -78,29 +72,22 @@ jobs:
 
       - name: Terraform Init
         run: |
-          cd site_mesh/f5xc-ce-azure
+          cd f5xc-app_connect/f5xc-instance-azure
           terraform init
-
       - name: Terraform Plan
-        env:
-          VES_P12_CONTENT: ${{ secrets.P12_CERTIFICATE_BASE64 }}
-          VES_P12_PASSWORD: ${{ secrets.VES_P12_PASSWORD }}
         run: |
-          cd site_mesh/f5xc-ce-azure
+          cd f5xc-app_connect/f5xc-instance-azure
           terraform plan
 
-      - name: Deploy F5XC AZURE Site
-        env:
-          VES_P12_CONTENT: ${{ secrets.P12_CERTIFICATE_BASE64 }}
-          VES_P12_PASSWORD: ${{ secrets.VES_P12_PASSWORD }}
+      - name: Terraform Apply
         run: |
-          cd site_mesh/f5xc-ce-azure
+          cd f5xc-app_connect/f5xc-instance-azure
           terraform apply -auto-approve
 
-      - name: Get Azure Outputs from Terraform Cloud
+      - name: Get Outputs from Terraform Cloud
         id: get-outputs
         run: |
-          cd site_mesh/f5xc-ce-azure
+          cd f5xc-app_connect/f5xc-instance-azure
 
           # Wait a moment for outputs to be available
           sleep 5
@@ -144,7 +131,7 @@ jobs:
           TF_VAR_site_name: ${{ needs.azure-ce-deployment.outputs.azure_site_name }}
           TF_VAR_site_adv_name: ${{ needs.aws-ce-deployment.outputs.aws_site_name }}
         run: |
-          cd site_mesh/f5xc-ce-azure
+          cd f5xc-app_connect/xc-multicloud/backend-lb
           echo "Running F5XC terraform Automation"
           echo "Using Public IP: $TF_VAR_public_ip"
           terraform init
@@ -176,7 +163,8 @@ jobs:
           TF_VAR_inside_network_IP: ${{ needs.aws-ce-deployment.outputs.private_app_ip }}
           TF_VAR_site_name: ${{ needs.aws-ce-deployment.outputs.aws_site_name }}
         run: |
-          cd site_mesh/f5xc-ce-aws
+          cd f5xc-app_connect/xc-multicloud/frontend-lb
           echo "Running F5XC terraform Automation"
+          echo "Using Public IP: $TF_VAR_public_ip"
           terraform init
           terraform apply -auto-approve

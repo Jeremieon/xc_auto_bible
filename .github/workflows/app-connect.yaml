@@ -1,4 +1,4 @@
-name: F5XC(App Connect)
+name: F5XC App-Connect
 
 on:
   workflow_dispatch:

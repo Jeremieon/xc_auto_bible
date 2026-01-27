@@ -1,4 +1,4 @@
-name: AWS&F5XC(HTTP)
+name: AWS-F5XC(HTTP)
 on:
   workflow_dispatch:
 jobs:

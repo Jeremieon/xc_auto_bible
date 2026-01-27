@@ -1,4 +1,4 @@
-name: AWS&F5XC(HTTPS) DESTROY
+name: AWS-F5XC(HTTPS)- DESTROY
 
 on:
   workflow_dispatch:
