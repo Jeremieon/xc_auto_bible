@@ -47,6 +47,7 @@ resource "volterra_origin_pool" "http-origin-pool" {
     private_ip {
       inside_network = true
       ip             = var.inside_network_IP
+      segment {}
       site_locator {
         site {
           name      = var.site_name
@@ -82,20 +83,6 @@ resource "volterra_http_loadbalancer" "https_auto_cert-lb" {
   }
 
   advertise_on_public_default_vip = true
-  # Or advertise on RE (internet)
-  # advertise_on_public_default_vip = true
-  # Advertise on CE public IP
-  # advertise_custom {
-  #   advertise_where {
-  #     site {
-  #       network = var.site_adv_network
-  #       site {
-  #         namespace = "system"
-  #         name      = var.site_name
-  #       }
-  #     }
-  #   }
-  # }
 
   default_route_pools {
     pool {

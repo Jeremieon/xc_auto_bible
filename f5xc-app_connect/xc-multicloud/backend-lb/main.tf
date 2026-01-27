@@ -37,6 +37,7 @@ resource "volterra_origin_pool" "http-backend-pool" {
 
   origin_servers {
     private_ip {
+      segment {}
       ip             = var.inside_network_IP
       inside_network = true
       site_locator {
