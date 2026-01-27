@@ -154,6 +154,19 @@ variable "domains" {
   default     = []
 }
 
+
+variable "slo-private-ip" {
+  description = "Private IP for SLO interface"
+  type        = string
+  default     = "value"
+}
+
+variable "sli-private-ip" {
+  description = "Private IP for SLI interface"
+  type        = string
+  default     = "value"
+}
+
 variable "http_port" {
   type        = number
   description = "HTTP port for the load balancer"

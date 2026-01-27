@@ -156,6 +156,14 @@ resource "aws_security_group" "EC2-CE-sg-SLO" {
   }
 
   ingress {
+    description = "HTTPS from VPC"
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = [aws_vpc.main_vpc.cidr_block]
+  }
+
+  ingress {
     description = "IPSEC from any"
     from_port   = 4500
     to_port     = 4500
@@ -329,26 +337,26 @@ resource "aws_instance" "smsv2-aws-tf" {
   }
 }
 
-# # Create Private Hosted Zone
-# resource "aws_route53_zone" "private" {
-#   name = "backend.internal"
+# Create Private Hosted Zone
+resource "aws_route53_zone" "private" {
+  name = "backend.internal"
 
-#   vpc {
-#     vpc_id = aws_vpc.main_vpc.id
-#   }
+  vpc {
+    vpc_id = aws_vpc.main_vpc.id
+  }
 
-#   tags = {
-#     Name = "private-dns-zone"
-#   }
-# }
+  tags = {
+    Name = "private-dns-zone"
+  }
+}
 
-# # Create A Record for Azure Backend
-# resource "aws_route53_record" "azure_backend" {
-#   zone_id = aws_route53_zone.private.zone_id
-#   name    = "azure.backend.internal"
-#   type    = "A"
-#   ttl     = 300
-#   records = ["10.0.3.10"]
-# }
+# Create A Record for Azure Backend
+resource "aws_route53_record" "azure_backend" {
+  zone_id = aws_route53_zone.private.zone_id
+  name    = "azure.backend.internal"
+  type    = "A"
+  ttl     = 300
+  records = ["10.0.3.10"]
+}
 
 

@@ -24,6 +24,7 @@ variable "node_count" {
 variable "slo-private-ip" {
   description = "Private IP for SLO interface"
   type        = string
+  default     = "value"
 }
 
 variable "sli-private-ip" {
