@@ -40,6 +40,7 @@ resource "volterra_origin_pool" "http-origin-pool" {
     private_ip {
       ip             = var.inside_network_IP
       inside_network = true
+      segment {}
       site_locator {
         site {
           name      = var.site_name
