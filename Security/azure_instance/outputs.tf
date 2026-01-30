@@ -1,4 +1,4 @@
-output "public_vm_ip" {
+output "public_ip" {
   value       = azurerm_public_ip.public_vm.ip_address
   description = "Public IP of the public VM"
 }
