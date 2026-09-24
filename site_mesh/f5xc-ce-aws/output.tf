@@ -4,7 +4,7 @@ output "ce_instance_id" {
 }
 
 output "ce_public_ip" {
-  value = aws_eip.public_ip
+  value = aws_eip.public_ip.public_ip
 }
 
 output "ce_outside_private_ip" {
@@ -18,11 +18,11 @@ output "ce_inside_private_ip" {
 # Frontend App Instance
 
 output "private_app_ip" {
-  value = aws_instance.private_app_server[0].private_ip
+  value = aws_instance.private_app_server[*].private_ip
 }
 
 output "aws_site_name" {
-  value = volterra_securemesh_site_v2.site.name
+  value = volterra_securemesh_site_v2.site[*].name
 }
 
 # Route53
