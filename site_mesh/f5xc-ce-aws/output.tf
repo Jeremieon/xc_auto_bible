@@ -1,6 +1,6 @@
 # CE Instance
 output "ce_instance_id" {
-  value = aws_instance.smsv2-aws-tf.id
+  value = aws_instance.smsv2-aws-tf[*].id
 }
 
 output "ce_public_ip" {
@@ -8,11 +8,11 @@ output "ce_public_ip" {
 }
 
 output "ce_outside_private_ip" {
-  value = aws_network_interface.public.private_ip
+  value = aws_network_interface.outside[*].private_ip
 }
 
 output "ce_inside_private_ip" {
-  value = aws_network_interface.private.private_ip
+  value = aws_network_interface.inside[*].private_ip
 }
 
 # Frontend App Instance
