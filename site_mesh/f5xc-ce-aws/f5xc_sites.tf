@@ -23,11 +23,12 @@ resource "volterra_securemesh_site_v2" "site" {
   block_all_services      = true
   logs_streaming_disabled = true
   enable_ha               = false
-  labels = merge({
-    "ves.io/provider" = "ves-io-AWS"
-    }, var.f5xc_vsite_key != "" && var.f5xc_vsite_key_label != "" ? {
-    "${var.f5xc_vsite_key}" = "${var.f5xc_vsite_key_label}"
-  } : {})
+    labels = merge(
+    { "ves.io/provider" = "ves-io-AWS" },
+    var.create_f5xc_virtual_site && var.f5xc_vsite_key != "" && var.f5xc_vsite_key_label != "" ? {
+      (var.f5xc_vsite_key) = var.f5xc_vsite_key_label
+    } : {}
+  )
 
   re_select {
     geo_proximity = true
