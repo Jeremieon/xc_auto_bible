@@ -55,6 +55,7 @@ resource "volterra_securemesh_site_v2" "site" {
 
 
 resource "volterra_site_mesh_group" "vsite_mesh" {
+  count      = var.create_f5xc_virtual_site && var.f5xc_virtual_site_name != "" ? 1 : 0
   name       = "${var.f5xc_virtual_site_name}-mesh"
   namespace  = "system"
   depends_on = [volterra_virtual_site.vsite]
