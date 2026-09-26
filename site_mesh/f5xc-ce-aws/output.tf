@@ -22,7 +22,7 @@ output "private_app_ip" {
 }
 
 output "aws_site_name" {
-  value = volterra_securemesh_site_v2.site[*].name
+  value = join(",", volterra_securemesh_site_v2.site[*].name)
 }
 
 # Route53
