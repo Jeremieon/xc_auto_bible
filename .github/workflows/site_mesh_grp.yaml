@@ -144,7 +144,7 @@ jobs:
           TF_VAR_site_name: ${{ needs.azure-ce-deployment.outputs.azure_site_name }}
           TF_VAR_site_adv_name: ${{ needs.aws-ce-deployment.outputs.aws_site_name }}
         run: |
-          cd site_mesh/f5xc-ce-azure
+          cd site_mesh/xc-multicloud/backend-lb
           echo "Running F5XC terraform Automation"
           echo "Using Public IP: $TF_VAR_public_ip"
           terraform init
@@ -176,7 +176,7 @@ jobs:
           TF_VAR_inside_network_IP: ${{ needs.aws-ce-deployment.outputs.private_app_ip }}
           TF_VAR_site_name: ${{ needs.aws-ce-deployment.outputs.aws_site_name }}
         run: |
-          cd site_mesh/f5xc-ce-aws
+          cd site_mesh/xc-multicloud/frontend-lb
           echo "Running F5XC terraform Automation"
           terraform init
           terraform apply -auto-approve
