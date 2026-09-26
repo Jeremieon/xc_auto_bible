@@ -113,19 +113,19 @@ variable "f5xc_sms_description" {
 variable "f5xc_vsite_key" {
   type        = string
   description = "F5XC virtual site key for site selection"
-  default     = "my-vsite-key"
+  default     = "jeremieon-terraform"
 }
 
 variable "f5xc_vsite_key_label" {
   type        = string
   description = "F5XC virtual site key label value"
-  default     = "yes"
+  default     = "azure-aws"
 }
 
 variable "create_f5xc_vsite_resources" {
   type        = bool
   description = "Create the F5XC vsite key and label resources"
-  default     = true
+  default     = false
 }
 
 variable "node_count" {

@@ -23,9 +23,9 @@ resource "volterra_securemesh_site_v2" "site" {
   block_all_services      = true
   logs_streaming_disabled = true
   enable_ha               = false
-    labels = merge(
+      labels = merge(
     { "ves.io/provider" = "ves-io-AWS" },
-    var.create_f5xc_virtual_site && var.f5xc_vsite_key != "" && var.f5xc_vsite_key_label != "" ? {
+    var.f5xc_vsite_key != "" && var.f5xc_vsite_key_label != "" ? {
       (var.f5xc_vsite_key) = var.f5xc_vsite_key_label
     } : {}
   )
@@ -54,20 +54,20 @@ resource "volterra_securemesh_site_v2" "site" {
 }
 
 
-resource "volterra_site_mesh_group" "vsite_mesh" {
-  count      = var.create_f5xc_virtual_site && var.f5xc_virtual_site_name != "" ? 1 : 0
-  name       = "${var.f5xc_virtual_site_name}-mesh"
-  namespace  = "system"
-  depends_on = [volterra_virtual_site.vsite]
-  virtual_site {
-    name      = var.f5xc_virtual_site_name
-    namespace = "shared"
-  }
-  full_mesh {
-    data_plane_mesh = true
-  }
-  enable_re_fallback = true
-}
+# resource "volterra_site_mesh_group" "vsite_mesh" {
+#   count      = var.create_f5xc_virtual_site && var.f5xc_virtual_site_name != "" ? 1 : 0
+#   name       = "${var.f5xc_virtual_site_name}-mesh"
+#   namespace  = "system"
+#   depends_on = [volterra_virtual_site.vsite]
+#   virtual_site {
+#     name      = var.f5xc_virtual_site_name
+#     namespace = "shared"
+#   }
+#   full_mesh {
+#     data_plane_mesh = true
+#   }
+#   enable_re_fallback = true
+# }
 
 resource "volterra_token" "smsv2-token" {
   count      = var.node_count
@@ -78,18 +78,18 @@ resource "volterra_token" "smsv2-token" {
   site_name  = volterra_securemesh_site_v2.site[count.index].name
 }
 
-resource "volterra_virtual_site" "vsite" {
-  count      = var.create_f5xc_virtual_site && var.f5xc_virtual_site_name != "" ? 1 : 0
-  depends_on = [volterra_known_label_key.vsite_key, volterra_known_label.vsite_label]
-  name       = var.f5xc_virtual_site_name
-  namespace  = "shared"
+# resource "volterra_virtual_site" "vsite" {
+#   count      = var.create_f5xc_virtual_site && var.f5xc_virtual_site_name != "" ? 1 : 0
+#   depends_on = [volterra_known_label_key.vsite_key, volterra_known_label.vsite_label]
+#   name       = var.f5xc_virtual_site_name
+#   namespace  = "shared"
 
-  site_selector {
-    expressions = ["${var.f5xc_vsite_key} in (${var.f5xc_vsite_key_label})"]
-  }
+#   site_selector {
+#     expressions = ["${var.f5xc_vsite_key} in (${var.f5xc_vsite_key_label})"]
+#   }
 
-  site_type = "CUSTOMER_EDGE"
-}
+#   site_type = "CUSTOMER_EDGE"
+# }
 
 data "cloudinit_config" "f5xc-ce_config" {
   count         = var.node_count
